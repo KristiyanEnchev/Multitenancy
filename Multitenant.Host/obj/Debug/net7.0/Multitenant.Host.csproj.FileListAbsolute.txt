@@ -1,6 +1,0 @@
-D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Host\obj\Debug\net7.0\Multitenant.Host.csproj.AssemblyReference.cache
-D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Host\obj\Debug\net7.0\Multitenant.Host.GeneratedMSBuildEditorConfig.editorconfig
-D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Host\obj\Debug\net7.0\Multitenant.Host.AssemblyInfoInputs.cache
-D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Host\obj\Debug\net7.0\Multitenant.Host.AssemblyInfo.cs
-D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Host\obj\Debug\net7.0\Multitenant.Host.csproj.CoreCompileInputs.cache
-D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Host\obj\Debug\net7.0\Multitenant.Host.MvcApplicationPartsAssemblyInfo.cache
