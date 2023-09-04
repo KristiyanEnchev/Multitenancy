@@ -1,0 +1,7 @@
+{
+  "DatabaseSettings": {
+    "DBProvider": "mssql",
+    "ConnectionString": "Server=.;Database=Multitenant;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
+    "TenantConnectionString": "Server=.;Database=Tenants;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false"
+  }
+}

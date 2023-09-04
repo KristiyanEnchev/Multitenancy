@@ -1,0 +1,12 @@
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\bin\Debug\net7.0\Multitenant.Shared.deps.json
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\bin\Debug\net7.0\Multitenant.Shared.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\bin\Debug\net7.0\Multitenant.Shared.pdb
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.csproj.AssemblyReference.cache
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.AssemblyInfoInputs.cache
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.AssemblyInfo.cs
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.csproj.CoreCompileInputs.cache
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\refint\Multitenant.Shared.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\Multitenant.Shared.pdb
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Shared\obj\Debug\net7.0\ref\Multitenant.Shared.dll

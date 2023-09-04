@@ -1,0 +1,14 @@
+{
+  "SwaggerSettings": {
+    "Enable": true,
+    "Version": "1.0.0",
+    "Title": "Multi Auth API",
+    "Description": "Kiko Clean Architecture Multitenancy Auth API.",
+    "TermsOfService": "None",
+    "Contact": {
+      "Name": "Kristiyan Enchev",
+      "Email": "kristiqnenchevv@gmail.com",
+      "Url": "https://kristiyan-enchev-website.web.app"
+    }
+  }
+}

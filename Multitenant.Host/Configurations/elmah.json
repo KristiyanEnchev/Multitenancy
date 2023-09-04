@@ -1,0 +1,8 @@
+{
+  "ElmahSettings": {
+    "activate": true,
+    "elmahDb": "Server=.;Database=Multi_Elmah;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
+    "ConnectionString": "Server=.;Database=Multi_Elmah;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
+    "elmahTable": "ELMAH_Error"
+  }
+}

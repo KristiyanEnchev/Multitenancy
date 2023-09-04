@@ -1,0 +1,17 @@
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Application.deps.json
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Application.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Application.pdb
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Domain.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Shared.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Domain.pdb
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\bin\Debug\net7.0\Multitenant.Shared.pdb
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.csproj.AssemblyReference.cache
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.AssemblyInfoInputs.cache
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.AssemblyInfo.cs
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.csproj.CoreCompileInputs.cache
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.csproj.CopyComplete
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\refint\Multitenant.Application.dll
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\Multitenant.Application.pdb
+D:\WORKING_ON\Start all over\Multitenant.Host\Multitenant.Application\obj\Debug\net7.0\ref\Multitenant.Application.dll
