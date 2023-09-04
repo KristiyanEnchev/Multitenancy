@@ -2,8 +2,8 @@
 {
     using System.Security.Claims;
 
-    using Multitenant.Application.Interfaces.Utility;
     using Multitenant.Shared.ClaimsPrincipal;
+    using Multitenant.Application.Interfaces.Utility.User;
 
     public class CurrentUser : ICurrentUser, ICurrentUserInitializer
     {

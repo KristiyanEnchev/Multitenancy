@@ -1,4 +1,4 @@
-namespace Multitenant.WEB.Middlewares
+namespace Multitenant.WEB.Middlewares.Logging
 {
     using System.Text;
 

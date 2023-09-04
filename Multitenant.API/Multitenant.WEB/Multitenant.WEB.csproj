@@ -8,15 +8,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Multitenant.Application\Multitenant.Application.csproj" />
+    <ProjectReference Include="..\Multitenant.Models\Multitenant.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
-    <Folder Include="Filters\" />
     <Folder Include="Attributes\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />

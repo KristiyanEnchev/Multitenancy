@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Application.Interfaces.Utility
+﻿namespace Multitenant.Application.Interfaces.Utility.User
 {
     using System.Security.Claims;
 

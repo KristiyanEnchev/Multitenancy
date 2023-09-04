@@ -1,11 +1,11 @@
-namespace Multitenant.WEB.Middlewares
+namespace Multitenant.WEB.Middlewares.Logging
 {
     using Microsoft.AspNetCore.Http;
 
     using Serilog;
     using Serilog.Context;
 
-    using Multitenant.Application.Interfaces.Utility;
+    using Multitenant.Application.Interfaces.Utility.User;
 
     public class ResponseLoggingMiddleware : IMiddleware
     {
