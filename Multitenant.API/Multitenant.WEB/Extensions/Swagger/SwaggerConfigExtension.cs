@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Infrastructure.Extensions.Swagger
+﻿namespace Multitenant.WEB.Extensions.Swagger
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
@@ -37,13 +37,13 @@
                         Description = settings.Description,
                         Contact = new OpenApiContact
                         {
-                            Name = (settings.Contact?.Name ?? ""),
-                            Email = (settings.Contact?.Email ?? ""),
-                            Url = ((settings.Contact?.Url != null) ? new Uri(settings.Contact.Url) : null)
+                            Name = settings.Contact?.Name ?? "",
+                            Email = settings.Contact?.Email ?? "",
+                            Url = settings.Contact?.Url != null ? new Uri(settings.Contact.Url) : null
                         }
                     });
 
-                    if (configuration["SecuritySettings:Provider"].Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
+                    if (configuration["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
                     {
                         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                         {
@@ -52,8 +52,8 @@
                             {
                                 AuthorizationCode = new OpenApiOAuthFlow
                                 {
-                                    AuthorizationUrl = new Uri(configuration["SecuritySettings:Swagger:AuthorizationUrl"]),
-                                    TokenUrl = new Uri(configuration["SecuritySettings:Swagger:TokenUrl"]),
+                                    AuthorizationUrl = new Uri(configuration["SecuritySettings:Swagger:AuthorizationUrl"]!),
+                                    TokenUrl = new Uri(configuration["SecuritySettings:Swagger:TokenUrl"]!),
                                     Scopes = new Dictionary<string, string>
                                     {
                                         { configuration["SecuritySettings:Swagger:ApiScope"]!, "access the api" }
@@ -131,7 +131,7 @@
                     options.DefaultModelsExpandDepth(-1);
                     options.DocExpansion(DocExpansion.None);
 
-                    if (config["SecuritySettings:Provider"].Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
+                    if (config["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
                     {
                         options.OAuthClientId(config["SecuritySettings:Swagger:OpenIdClientId"]);
                         options.OAuthUsePkce();

@@ -1,6 +1,7 @@
 ﻿namespace Multitenant.WEB.Filters
 {
     using Multitenant.Shared.Constants.Multitenancy;
+    using Multitenant.WEB.Extensions.Swagger;
 
     public class TenantIdHeaderAttribute : SwaggerHeaderAttribute
     {

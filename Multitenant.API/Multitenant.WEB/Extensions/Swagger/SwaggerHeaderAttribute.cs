@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Infrastructure.Extensions.Swagger
+﻿namespace Multitenant.WEB.Extensions.Swagger
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class SwaggerHeaderAttribute : Attribute

@@ -14,7 +14,7 @@
         internal static IApplicationBuilder UseCurrentUser(this IApplicationBuilder app) =>
             app.UseMiddleware<CurrentUserMiddleware>();
 
-        private static IServiceCollection AddCurrentUser(this IServiceCollection services) =>
+        internal static IServiceCollection AddCurrentUser(this IServiceCollection services) =>
             services
                 .AddScoped<CurrentUserMiddleware>();
 

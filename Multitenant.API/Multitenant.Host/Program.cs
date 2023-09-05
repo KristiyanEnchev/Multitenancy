@@ -5,6 +5,8 @@ namespace Multitenant.Host
     using Multitenant.Host.Startup;
     using Multitenant.Infrastructure.Extensions.Logging;
     using Multitenant.Infrastructure.Extensions.Initializer;
+    using Multitenant.Infrastructure;
+    using Multitenant.WEB;
 
     public class Program
     {
@@ -18,16 +20,16 @@ namespace Multitenant.Host
 
                 builder.AddConfigurations().RegisterSerilog();
                 builder.Services.AddControllers();
-                //builder.Services.AddInfrastructure(builder.Configuration);
-                //builder.Services.AddWeb();
+                builder.Services.AddInfrastructure(builder.Configuration);
+                builder.Services.AddWEB(builder.Configuration);
 
                 var app = builder.Build();
 
                 //await app.Services.InitializeDatabasesAsync();
 
-                //app.UseInfrastructure(builder.Configuration);
-                //app.UseWeb();
-
+                app.UseInfrastructure(builder.Configuration);
+                app.UseWEB(builder.Configuration);
+                app.MapEndpoints();
                 app.Run();
             }
             catch (Exception ex) when (!ex.GetType().Name.Equals("HostAbortedException", StringComparison.Ordinal))

@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Infrastructure.Extensions.Swagger
+﻿namespace Multitenant.WEB.Extensions.Swagger
 {
     using Microsoft.OpenApi.Models;
     using Swashbuckle.AspNetCore.SwaggerGen;
