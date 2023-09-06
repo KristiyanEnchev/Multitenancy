@@ -5,7 +5,7 @@
 
     public static class VersioningExtension
     {
-        private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>
+        internal static IServiceCollection AddVersioning(this IServiceCollection services) =>
         services.AddApiVersioning(config =>
         {
             config.DefaultApiVersion = new ApiVersion(1, 0);

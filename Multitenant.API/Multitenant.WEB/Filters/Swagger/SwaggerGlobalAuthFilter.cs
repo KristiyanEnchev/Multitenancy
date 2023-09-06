@@ -1,4 +1,4 @@
-﻿namespace Multitenant.WEB.Extensions.Swagger
+﻿namespace Multitenant.WEB.Filters.Swagger
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.OpenApi.Models;

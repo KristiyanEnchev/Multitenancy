@@ -1,10 +1,10 @@
-﻿namespace Multitenant.WEB.Extensions.Swagger
+﻿namespace Multitenant.WEB.Filters.Swagger
 {
     using System.Reflection;
 
     using Microsoft.OpenApi.Any;
     using Microsoft.OpenApi.Models;
-
+    using Multitenant.WEB.Attributes;
     using Swashbuckle.AspNetCore.SwaggerGen;
 
     public class SwaggerHeaderAttributeFilter : IOperationFilter
