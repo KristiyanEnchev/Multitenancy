@@ -19,7 +19,6 @@ namespace Multitenant.Host
                 var builder = WebApplication.CreateBuilder(args);
 
                 builder.AddConfigurations().RegisterSerilog();
-                builder.Services.AddControllers();
                 builder.Services.AddInfrastructure(builder.Configuration);
                 builder.Services.AddWEB(builder.Configuration);
 

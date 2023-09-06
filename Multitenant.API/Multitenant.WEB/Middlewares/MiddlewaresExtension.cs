@@ -8,6 +8,7 @@
     using Multitenant.WEB.Middlewares.Logging;
     using Multitenant.WEB.Middlewares.Exception;
     using Multitenant.WEB.Middlewares.CurrentUser;
+    using Multitenant.Application.Interfaces.Utility.User;
 
     internal static class MiddlewaresExtension
     {
@@ -16,7 +17,9 @@
 
         internal static IServiceCollection AddCurrentUser(this IServiceCollection services) =>
             services
-                .AddScoped<CurrentUserMiddleware>();
+                .AddScoped<CurrentUserMiddleware>()
+                .AddScoped<ICurrentUser, Multitenant.WEB.Services.CurrentUser>()
+                .AddScoped(sp => (ICurrentUserInitializer)sp.GetRequiredService<ICurrentUser>());
 
         internal static IServiceCollection AddExceptionMiddleware(this IServiceCollection services) =>
             services.AddScoped<ExceptionMiddleware>();

@@ -8,12 +8,15 @@
     using Swashbuckle.AspNetCore.SwaggerUI;
 
     using Multitenant.Models.Swagger;
+    using Multitenant.WEB.Filters.Swagger;
 
     public static class SwaggerConfigExtension
     {
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services, IConfiguration configuration)
         {
             SwaggerSettings settings = configuration.GetSection(nameof(SwaggerSettings)).Get<SwaggerSettings>()!;
+
+            services.AddEndpointsApiExplorer();
 
             if (settings == null)
             {
@@ -30,18 +33,18 @@
                     //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
-                    c.SwaggerDoc(settings.Version, new OpenApiInfo
-                    {
-                        Version = settings.Version,
-                        Title = settings.Title,
-                        Description = settings.Description,
-                        Contact = new OpenApiContact
-                        {
-                            Name = settings.Contact?.Name ?? "",
-                            Email = settings.Contact?.Email ?? "",
-                            Url = settings.Contact?.Url != null ? new Uri(settings.Contact.Url) : null
-                        }
-                    });
+                    //c.SwaggerDoc(settings.Version, new OpenApiInfo
+                    //{
+                    //    Version = settings.Version,
+                    //    Title = settings.Title,
+                    //    Description = settings.Description,
+                    //    Contact = new OpenApiContact
+                    //    {
+                    //        Name = settings.Contact?.Name ?? "",
+                    //        Email = settings.Contact?.Email ?? "",
+                    //        Url = settings.Contact?.Url != null ? new Uri(settings.Contact.Url) : null
+                    //    }
+                    //});
 
                     if (configuration["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
                     {
@@ -138,6 +141,16 @@
                         options.OAuthScopes(config["SecuritySettings:Swagger:ApiScope"]);
                     }
                 });
+
+                //app.Use(async (context, next) =>
+                //{
+                //    if (context.Request.Path == "/")
+                //    {
+                //        context.Response.Redirect("/swagger/index.html");
+                //    }
+
+                //    await next();
+                //});
             }
 
             return app;

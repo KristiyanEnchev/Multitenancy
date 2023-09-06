@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Infrastructure.Services.Utility
+﻿namespace Multitenant.WEB.Services
 {
     using System.Security.Claims;
 
