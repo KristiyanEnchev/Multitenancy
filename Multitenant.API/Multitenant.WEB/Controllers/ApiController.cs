@@ -44,7 +44,7 @@ namespace Multitenant.WEB.Controllers
     using Microsoft.Extensions.DependencyInjection;
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public abstract class ApiController : ControllerBase
     {
         protected const string Id = "{id}";

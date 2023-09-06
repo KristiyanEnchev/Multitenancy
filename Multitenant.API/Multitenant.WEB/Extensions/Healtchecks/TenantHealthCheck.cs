@@ -1,4 +1,4 @@
-﻿namespace Multitenant.WEB.Healtchecks
+﻿namespace Multitenant.WEB.Extensions.Healtchecks
 {
     using Microsoft.Extensions.Diagnostics.HealthChecks;
 

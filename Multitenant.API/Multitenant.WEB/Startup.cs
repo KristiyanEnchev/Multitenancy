@@ -5,8 +5,9 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    using Multitenant.WEB.Extensions.Authentication;
+    using Multitenant.WEB.Extensions.Healtchecks;
     using Multitenant.WEB.Extensions.Swagger;
-    using Multitenant.WEB.Healtchecks;
     using Multitenant.WEB.Middlewares;
 
     public static class Startup
@@ -15,10 +16,11 @@
         {
             services.AddControllers();
             services
+                .AddJWTAuthentiation()
                 .AddSwaggerDocumentation(config)
                 .AddExceptionMiddleware()
                 .AddCurrentUser()
-                .AddHealthCheck()
+                .AddHealth(config)
                 .AddRequestLogging(config)
                 .AddRouting(options => options.LowercaseUrls = true);
 
@@ -46,10 +48,7 @@
             return builder;
         }
 
-        private static IServiceCollection AddHealthCheck(this IServiceCollection services) =>
-            services.AddHealthChecks().AddCheck<TenantHealthCheck>("Tenant").Services;
-
-        private static IEndpointConventionBuilder MapHealthCheck(this IEndpointRouteBuilder endpoints) =>
-            endpoints.MapHealthChecks("/api/health");
+    //    private static IServiceCollection AddHealthCheck(this IServiceCollection services) =>
+    //services.AddHealthChecks().AddCheck<TenantHealthCheck>("Tenant").Services;
     }
 }

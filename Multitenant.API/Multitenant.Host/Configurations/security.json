@@ -1,9 +1,11 @@
 {
   "SecuritySettings": {
     "Provider": "Jwt",
-    "RequireConfirmedAccount":true,
+    "RequireConfirmedAccount": true,
     "JwtSettings": {
-      "key": "S0M3RAN0MS3CR3T!1!MAG1C!1!",
+      "key": "!1!MAG1C!1!S0MEAWSOWS3CR3TT0K3N",
+      "Issuer": "KIdentityService",
+      "Audience": "urn:kris/multitenancy",
       "tokenExpirationInMinutes": 60,
       "refreshTokenExpirationInDays": 7
     },
