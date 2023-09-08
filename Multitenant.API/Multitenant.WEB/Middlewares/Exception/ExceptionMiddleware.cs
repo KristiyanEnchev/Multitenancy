@@ -12,6 +12,7 @@
     using Multitenant.Application.Exceptions;
     using Multitenant.Application.Interfaces.Utility.User;
     using Multitenant.Application.Interfaces.Utility.Serializer;
+    using Newtonsoft.Json;
 
     public class ExceptionMiddleware : IMiddleware
     {
@@ -106,7 +107,8 @@
                     response.ContentType = "application/json";
                     response.StatusCode = errorResult.StatusCode;
 
-                    await response.WriteAsync(_jsonSerializer.Serialize(errorResult));
+                    await response.WriteAsync(JsonConvert.SerializeObject(errorResult));
+                    //await response.WriteAsync(_jsonSerializer.Serialize(errorResult));
                 }
                 else
                 {

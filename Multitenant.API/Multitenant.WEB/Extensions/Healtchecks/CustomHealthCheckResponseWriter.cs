@@ -1,36 +1,23 @@
 ﻿namespace Multitenant.WEB.Extensions.Healtchecks
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    using Newtonsoft.Json.Serialization;
+
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
-    using Multitenant.Application.Interfaces.Utility.Serializer;
-    using Newtonsoft.Json;
+
+    using Multitenant.Models.HealthCheck;
 
     internal class CustomHealthCheckResponseWriter
     {
-        public class Healthresult
+        public static Task WriteResponse(HttpContext httpContext, HealthReport result)
         {
-            public string? Status { get; set; }
-            public int TotalChecks { get; set; }
-            public List<Entry> Entries { get; set; }
-        }
-
-        public class Entry
-        {
-            public string? Name { get; set; } = null;
-            public TimeSpan? Duration { get; set; }
-            //public string? Description { get; set; }
-            public string? Status { get; set; }
-            public string? Exception { get; set; }
-        }
-
-
-        public static Task WriteResponse(HttpContext httpContext, HealthReport result, ISerializerService jsonSerializer)
-        {
-            var response = new Healthresult
+            var response = new HealthResult
             {
                 Status = result.Status.ToString(),
                 TotalChecks = result.Entries.Count,
-                Entries = result.Entries.Select(e => new Entry
+                Entries = result.Entries.Select(e => new HealthEntry
                 {
                     Name = e.Key,
                     Status = e.Value.Status.ToString(),
@@ -38,22 +25,16 @@
                     Exception = e.Value.Exception?.Message
                 }).ToList()
             };
-            //var response = new
-            //{
-            //    Status = result.Status.ToString(),
-            //    TotalChecks = result.Entries.Count,
-            //    Entries = result.Entries.Select(e => new
-            //    {
-            //        Name = e.Key,
-            //        Status = e.Value.Status.ToString(),
-            //        Description = e.Value.Description,
-            //        Exception = e.Value.Exception?.Message
-            //    })
-            //};
 
-
-
-            var jsonResponse = jsonSerializer.Serialize(response);
+            var jsonResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore,
+                Converters = new List<JsonConverter>
+                {
+                    new StringEnumConverter() { CamelCaseText = true }
+                }
+            });
             //var jsonResponse = JsonConvert.SerializeObject(response, Formatting.Indented);
             httpContext.Response.ContentType = "application/json";
 

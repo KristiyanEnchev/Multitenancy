@@ -1,9 +1,13 @@
 ﻿namespace Multitenant.WEB
 {
+    using System.Reflection;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
+    using MediatR;
 
     using Multitenant.WEB.Extensions.Authentication;
     using Multitenant.WEB.Extensions.Healtchecks;
@@ -17,10 +21,11 @@
             services.AddControllers();
             services
                 .AddJWTAuthentiation()
-                .AddSwaggerDocumentation(config)
                 .AddExceptionMiddleware()
+                .AddMediatR(Assembly.GetExecutingAssembly())
                 .AddCurrentUser()
                 .AddHealth(config)
+                .AddSwaggerDocumentation(config)
                 .AddRequestLogging(config)
                 .AddRouting(options => options.LowercaseUrls = true);
 
@@ -31,8 +36,8 @@
         {
             return builder
                 .UseHttpsRedirection()
-                .UseSwaggerDocumentation(config)
                 .UseExceptionMiddleware()
+                .UseSwaggerDocumentation(config)
                 .UseRouting()
                 .UseAuthentication()
                 .UseCurrentUser()
@@ -42,13 +47,10 @@
 
         public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
         {
-            builder.MapDefaultControllerRoute();
+            //builder.MapDefaultControllerRoute();
             builder.MapControllers().RequireAuthorization();
             builder.MapHealthCheck();
             return builder;
         }
-
-    //    private static IServiceCollection AddHealthCheck(this IServiceCollection services) =>
-    //services.AddHealthChecks().AddCheck<TenantHealthCheck>("Tenant").Services;
     }
 }

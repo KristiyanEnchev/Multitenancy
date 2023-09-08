@@ -8,8 +8,6 @@
 
     using ElmahCore.Mvc;
 
-    using MediatR;
-
     using Multitenant.Infrastructure.Extensions.Cors;
     using Multitenant.Infrastructure.Extensions.Elmah;
     using Multitenant.Infrastructure.Extensions.SecurityHeaders;
@@ -30,8 +28,6 @@
                 //.AddCaching(config)
                 .AddCorsPolicy(config)
                 .AddBehaviours(applicationAssembly)
-                //.AddHealthCheck()
-                .AddMediatR(Assembly.GetExecutingAssembly())
                 //.AddMultitenancy()
                 //.AddNotifications(config)
                 .AddElmahConfig(config)

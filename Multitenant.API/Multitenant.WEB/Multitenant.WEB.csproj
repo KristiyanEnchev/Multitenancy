@@ -9,12 +9,15 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Multitenant.Application\Multitenant.Application.csproj" />
 		<ProjectReference Include="..\Multitenant.Models\Multitenant.Models.csproj" />
+		<ProjectReference Include="..\Multitenant.Shared\Multitenant.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="7.0.0" />
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="MediatR" Version="12.1.1" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />

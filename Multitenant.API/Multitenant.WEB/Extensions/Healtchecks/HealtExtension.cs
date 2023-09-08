@@ -49,7 +49,7 @@
         internal static IEndpointConventionBuilder MapHealthCheck(this IEndpointRouteBuilder endpoints) =>
             endpoints.MapHealthChecks("/api/health", new HealthCheckOptions
             {
-                ResponseWriter = CustomHealthCheckResponseWriter.WriteResponse,
+                ResponseWriter = (httpContext, result) => CustomHealthCheckResponseWriter.WriteResponse(httpContext, result),
             });
     }
 }

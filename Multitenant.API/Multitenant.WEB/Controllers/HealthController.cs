@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Multitenant.WEB.Controllers
+﻿namespace Multitenant.WEB.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+    using Multitenant.Models.HealthCheck;
+
     public class HealthController : ApiController
     {
         private readonly HealthCheckService _healthCheckService;
@@ -23,15 +20,34 @@ namespace Multitenant.WEB.Controllers
         public async Task<IActionResult> CheckHealth()
         {
             var result = await _healthCheckService.CheckHealthAsync();
+            var healthCheckDto = new HealthResult
+            {
+                Entries = result.Entries.Select(e => new HealthEntry
+                {
+                    Name = e.Key,
+                    Status = e.Value.Status.ToString(),
+                    Duration = e.Value.Duration,
+                    Exception = e.Value.Exception?.Message
+                }).ToList(),
+                Status = result.Status.ToString(),
+                TotalChecks = result.Entries.Count
+            };
 
             if (result.Status == HealthStatus.Healthy)
             {
-                return Ok(result);
+                return Ok(healthCheckDto);
             }
 
-            return Ok(result);
-
-            return StatusCode(500, result);
+            //var some = new
+            //{
+            //    Checks = result.Entries.Select(e => new
+            //    {
+            //        e.Key,
+            //    }),
+            //    Health = "Healty"
+            //};
+            //return Ok(some);
+            return StatusCode(500, healthCheckDto);
         }
     }
 }
