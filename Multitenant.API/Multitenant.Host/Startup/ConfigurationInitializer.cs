@@ -15,8 +15,8 @@
                     //.AddJsonFile($"{configurationsDirectory}/hangfire.json", optional: false, reloadOnChange: true)
                     //.AddJsonFile($"{configurationsDirectory}/hangfire.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
 
-                    //.AddJsonFile($"{configurationsDirectory}/health.json", optional: false, reloadOnChange: true)
-                    //.AddJsonFile($"{configurationsDirectory}/health.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"{configurationsDirectory}/health.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile($"{configurationsDirectory}/health.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
 
                     //.AddJsonFile($"{configurationsDirectory}/cache.json", optional: false, reloadOnChange: true)
                     //.AddJsonFile($"{configurationsDirectory}/cache.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
@@ -35,9 +35,6 @@
 
                     .AddJsonFile($"{configurationsDirectory}/security.json", optional: false, reloadOnChange: true)
                     .AddJsonFile($"{configurationsDirectory}/security.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-
-                    //.AddJsonFile($"{configurationsDirectory}/openapi.json", optional: false, reloadOnChange: true)
-                    //.AddJsonFile($"{configurationsDirectory}/openapi.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
 
                     .AddJsonFile($"{configurationsDirectory}/swagger.json", optional: false, reloadOnChange: true)
                     .AddJsonFile($"{configurationsDirectory}/swagger.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)

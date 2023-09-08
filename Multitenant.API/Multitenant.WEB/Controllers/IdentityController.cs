@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Multitenant.Application.Exceptions;
-using Multitenant.WEB.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Multitenant.WEB.Controllers
+﻿namespace Multitenant.WEB.Controllers
 {
+    using System.Net;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+
+    using Multitenant.WEB.Attributes;
+    using Multitenant.Application.Exceptions;
+
     public class IdentityController : ApiController
     {
         [HttpPost]
