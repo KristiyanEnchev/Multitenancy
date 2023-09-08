@@ -18,17 +18,17 @@
     {
         public static IServiceCollection AddWEB(this IServiceCollection services, IConfiguration config)
         {
+            services.AddHttpContextAccessor();
             services.AddControllers();
             services
                 .AddJWTAuthentiation()
+                .AddCurrentUser()
                 .AddExceptionMiddleware()
                 .AddMediatR(Assembly.GetExecutingAssembly())
-                .AddCurrentUser()
                 .AddHealth(config)
                 .AddSwaggerDocumentation(config)
                 .AddRequestLogging(config)
                 .AddRouting(options => options.LowercaseUrls = true);
-
             return services;
         }
 
@@ -37,17 +37,16 @@
             return builder
                 .UseHttpsRedirection()
                 .UseExceptionMiddleware()
-                .UseSwaggerDocumentation(config)
                 .UseRouting()
                 .UseAuthentication()
                 .UseCurrentUser()
                 .UseAuthorization()
-                .UseRequestLogging(config);
+                .UseRequestLogging(config)
+                .UseSwaggerDocumentation(config);
         }
 
         public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
         {
-            //builder.MapDefaultControllerRoute();
             builder.MapControllers().RequireAuthorization();
             builder.MapHealthCheck();
             return builder;

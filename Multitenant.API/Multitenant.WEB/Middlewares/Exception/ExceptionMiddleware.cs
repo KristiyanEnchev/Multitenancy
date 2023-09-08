@@ -107,8 +107,7 @@
                     response.ContentType = "application/json";
                     response.StatusCode = errorResult.StatusCode;
 
-                    await response.WriteAsync(JsonConvert.SerializeObject(errorResult));
-                    //await response.WriteAsync(_jsonSerializer.Serialize(errorResult));
+                    await response.WriteAsync(_jsonSerializer.Serialize(errorResult));
                 }
                 else
                 {

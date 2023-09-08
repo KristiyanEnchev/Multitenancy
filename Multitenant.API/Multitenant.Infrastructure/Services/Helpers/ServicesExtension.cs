@@ -3,7 +3,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Multitenant.Application.Interfaces.DependencyScope;
 
-    internal static class Startup
+    internal static class ServicesExtension
     {
         internal static IServiceCollection AddServices(this IServiceCollection services) =>
             services
