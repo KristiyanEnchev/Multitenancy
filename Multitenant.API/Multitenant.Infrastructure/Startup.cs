@@ -13,7 +13,7 @@
     using Multitenant.Infrastructure.Extensions.SecurityHeaders;
     using Multitenant.Infrastructure.Extensions.Validations;
     using Multitenant.Infrastructure.Extensions.Versioning;
-    using Multitenant.Infrastructure.Services.Helpers;
+    using Multitenant.Infrastructure.Extensions.Service;
 
     public static class Startup
     {
