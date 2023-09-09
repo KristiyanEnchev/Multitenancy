@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Infrastructure.Services.Helpers
+﻿namespace Multitenant.Infrastructure.Extensions.Service
 {
     using Microsoft.Extensions.DependencyInjection;
     using Multitenant.Application.Interfaces.DependencyScope;

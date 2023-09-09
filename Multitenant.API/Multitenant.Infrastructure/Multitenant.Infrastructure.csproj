@@ -43,4 +43,8 @@
 		<ProjectReference Include="..\Multitenant.Models\Multitenant.Models.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\Helpers\" />
+	</ItemGroup>
+
 </Project>
