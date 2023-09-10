@@ -1,8 +1,7 @@
 ﻿namespace Multitenant.WEB.Extensions.Configuration
 {
     using Microsoft.Extensions.Configuration;
-
-    using Multitenant.Models.Database;
+    using Multitenant.Models.Persistence;
 
     public static class ConfigurationExtensions
     {

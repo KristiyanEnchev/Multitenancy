@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Models.Database
+﻿namespace Multitenant.Models.Persistence
 {
     public class RedisSettings
     {

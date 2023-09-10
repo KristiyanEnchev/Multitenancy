@@ -14,13 +14,14 @@
     using Multitenant.Infrastructure.Extensions.Validations;
     using Multitenant.Infrastructure.Extensions.Versioning;
     using Multitenant.Infrastructure.Extensions.Service;
+    using Multitenant.Infrastructure.Extensions.Mapping;
 
     public static class Startup
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             var applicationAssembly = typeof(Multitenant.Application.Startup).GetTypeInfo().Assembly;
-            //MapsterSettings.Configure();
+            MapsterSettings.Configure();
             return services
                 .AddVersioning()
                 //.AddAuth(config)

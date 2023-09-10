@@ -1,17 +1,18 @@
-﻿using FSH.WebApi.Application.Common.Specification;
-
-namespace Multitenant.Application.Specification;
-
-public class EntitiesByPaginationFilterSpec<T, TResult> : EntitiesByBaseFilterSpec<T, TResult>
+﻿namespace Multitenant.Application.Specification
 {
-    public EntitiesByPaginationFilterSpec(PaginationFilter filter)
-        : base(filter) =>
-        Query.PaginateBy(filter);
-}
+    using Multitenant.Application.Response;
 
-public class EntitiesByPaginationFilterSpec<T> : EntitiesByBaseFilterSpec<T>
-{
-    public EntitiesByPaginationFilterSpec(PaginationFilter filter)
-        : base(filter) =>
-        Query.PaginateBy(filter);
+    public class EntitiesByPaginationFilterSpec<T, TResult> : EntitiesByBaseFilterSpec<T, TResult>
+    {
+        public EntitiesByPaginationFilterSpec(PaginationFilter filter)
+            : base(filter) =>
+            Query.PaginateBy(filter);
+    }
+
+    public class EntitiesByPaginationFilterSpec<T> : EntitiesByBaseFilterSpec<T>
+    {
+        public EntitiesByPaginationFilterSpec(PaginationFilter filter)
+            : base(filter) =>
+            Query.PaginateBy(filter);
+    }
 }

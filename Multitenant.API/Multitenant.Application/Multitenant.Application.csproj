@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.Specification" Version="7.0.0" />
     <PackageReference Include="FluentValidation" Version="11.7.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
@@ -14,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Multitenant.Domain\Multitenant.Domain.csproj" />
+    <ProjectReference Include="..\Multitenant.Models\Multitenant.Models.csproj" />
     <ProjectReference Include="..\Multitenant.Shared\Multitenant.Shared.csproj" />
   </ItemGroup>
 

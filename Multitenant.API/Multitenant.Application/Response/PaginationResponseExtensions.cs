@@ -1,5 +1,9 @@
 namespace Multitenant.Application.Response
 {
+    using Ardalis.Specification;
+
+    using Multitenant.Application.Interfaces.Utility;
+
     public static class PaginationResponseExtensions
     {
         public static async Task<PaginationResponse<TDestination>> PaginatedListAsync<T, TDestination>(

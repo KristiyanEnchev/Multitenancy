@@ -1,8 +1,13 @@
-﻿namespace Multitenant.Application.Specification;
-
-public class AuditableEntitiesByCreatedOnBetweenSpec<T> : Specification<T>
-    where T : AuditableEntity
+﻿namespace Multitenant.Application.Specification
 {
-    public AuditableEntitiesByCreatedOnBetweenSpec(DateTime from, DateTime until) =>
-        Query.Where(e => e.CreatedOn >= from && e.CreatedOn <= until);
+    using Ardalis.Specification;
+
+    using Multitenant.Domain.Contracts;
+
+    public class AuditableEntitiesByCreatedOnBetweenSpec<T> : Specification<T>
+        where T : AuditableEntity
+    {
+        public AuditableEntitiesByCreatedOnBetweenSpec(DateTime from, DateTime until) =>
+            Query.Where(e => e.CreatedOn >= from && e.CreatedOn <= until);
+    }
 }
