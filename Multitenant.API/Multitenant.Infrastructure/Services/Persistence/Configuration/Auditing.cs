@@ -5,8 +5,8 @@
 
     using Finbuckle.MultiTenant.EntityFrameworkCore;
 
-    using Multitenant.Infrastructure.Auditing;
     using Multitenant.Models.Persistence;
+    using Multitenant.Application.Persistence.Auditing;
 
     public class AuditTrailConfig : IEntityTypeConfiguration<Trail>
     {

@@ -1,6 +1,6 @@
 namespace Multitenant.Application.Persistence.Auditing
 {
-    using Multitenant.Domain.Contracts;
+    using Multitenant.Domain.Entities;
 
     public class Trail : BaseEntity
     {

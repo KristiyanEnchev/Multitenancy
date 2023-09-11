@@ -1,6 +1,7 @@
 namespace Multitenant.Domain.Events
 {
     using Multitenant.Domain.Contracts;
+    using Multitenant.Domain.Entities;
 
     public static class EntityUpdatedEvent
     {

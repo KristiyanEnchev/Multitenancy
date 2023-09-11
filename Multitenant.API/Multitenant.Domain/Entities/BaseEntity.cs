@@ -1,6 +1,8 @@
-namespace Multitenant.Domain.Contracts
+namespace Multitenant.Domain.Entities
 {
     using System.ComponentModel.DataAnnotations.Schema;
+
+    using Multitenant.Domain.Contracts;
 
     public abstract class BaseEntity : BaseEntity<Guid>
     {

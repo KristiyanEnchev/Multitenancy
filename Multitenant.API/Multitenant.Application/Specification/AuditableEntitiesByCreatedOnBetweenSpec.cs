@@ -2,7 +2,7 @@
 {
     using Ardalis.Specification;
 
-    using Multitenant.Domain.Contracts;
+    using Multitenant.Domain.Entities;
 
     public class AuditableEntitiesByCreatedOnBetweenSpec<T> : Specification<T>
         where T : AuditableEntity

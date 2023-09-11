@@ -1,4 +1,6 @@
-﻿namespace Multitenant.Domain.Contracts
+﻿using Multitenant.Domain.Entities;
+
+namespace Multitenant.Domain.Contracts
 {
     public interface IEntity
     {

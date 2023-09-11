@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Multitenant.Shared\Multitenant.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Identity\" />
+  </ItemGroup>
+
 </Project>

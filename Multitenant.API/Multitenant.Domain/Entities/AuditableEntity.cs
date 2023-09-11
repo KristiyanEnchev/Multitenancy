@@ -1,5 +1,7 @@
-namespace Multitenant.Domain.Contracts
+namespace Multitenant.Domain.Entities
 {
+    using Multitenant.Domain.Contracts;
+
     public abstract class AuditableEntity : AuditableEntity<Guid>
     {
     }
