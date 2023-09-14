@@ -23,6 +23,7 @@
                 return services;
             }
 
+
             if (settings.Enable)
             {
                 services.AddSwaggerGen(c =>
