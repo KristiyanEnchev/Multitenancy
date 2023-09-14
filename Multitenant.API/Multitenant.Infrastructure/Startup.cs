@@ -15,12 +15,18 @@
     using Multitenant.Infrastructure.Extensions.Versioning;
     using Multitenant.Infrastructure.Extensions.Service;
     using Multitenant.Infrastructure.Extensions.Mapping;
+    using Multitenant.Infrastructure.Services.Persistence;
+    using Multitenant.Application;
+    using Multitenant.Infrastructure.Extensions.Tenant;
+    using Multitenant.Application.Interfaces.Persistance;
 
     public static class Startup
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             var applicationAssembly = typeof(Multitenant.Application.Startup).GetTypeInfo().Assembly;
+            services.AddApplication();
+
             MapsterSettings.Configure();
             return services
                 .AddVersioning()
@@ -29,22 +35,22 @@
                 //.AddCaching(config)
                 .AddCorsPolicy(config)
                 .AddBehaviours(applicationAssembly)
-                //.AddMultitenancy()
+                .AddMultitenancy()
                 //.AddNotifications(config)
                 .AddElmahConfig(config)
-                //.AddPersistence()
+                .AddPersistence()
                 .AddServices();
 
         }
 
-        //public static async Task InitializeDatabasesAsync(this IServiceProvider services, CancellationToken cancellationToken = default)
-        //{
-        //    // Create a new scope to retrieve scoped services
-        //    using var scope = services.CreateScope();
+        public static async Task InitializeDatabasesAsync(this IServiceProvider services, CancellationToken cancellationToken = default)
+        {
+            // Create a new scope to retrieve scoped services
+            using var scope = services.CreateScope();
 
-        //    await scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>()
-        //        .InitializeDatabasesAsync(cancellationToken);
-        //}
+            await scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>()
+                .InitializeDatabasesAsync(cancellationToken);
+        }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config) =>
             builder
@@ -52,7 +58,7 @@
                 .UseSecurityHeaders(config)
                 //.UseFileStorage()
                 .UseCorsPolicy()
-                //.UseMultiTenancy()
+                .UseMultiTenancy()
                 .UseElmah();
         //.UseHangfireDashboard(config);
     }

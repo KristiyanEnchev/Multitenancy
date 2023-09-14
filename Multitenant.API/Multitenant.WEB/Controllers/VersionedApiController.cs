@@ -1,9 +1,9 @@
-﻿namespace Multitenant.WEB.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+﻿//namespace Multitenant.WEB.Controllers
+//{
+//    using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/v{version:apiVersion}/[controller]")]
-    public class VersionedApiController : ApiController
-    {
-    }
-}
+//    [Route("api/v{version:apiVersion}/[controller]")]
+//    public class VersionedApiController : ApiController
+//    {
+//    }
+//}

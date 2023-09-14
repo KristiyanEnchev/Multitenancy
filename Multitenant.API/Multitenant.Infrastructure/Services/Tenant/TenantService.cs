@@ -55,7 +55,7 @@
 
         public async Task<string> CreateAsync(CreateTenantRequest request, CancellationToken cancellationToken)
         {
-            if (request.ConnectionString?.Trim() == _dbSettings.ConnectionString.Trim()) request.ConnectionString = string.Empty;
+            if (request.ConnectionString?.Trim() == _dbSettings.TenantConnectionString.Trim()) request.ConnectionString = string.Empty;
 
             var tenant = new MultiTenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, request.Issuer);
 

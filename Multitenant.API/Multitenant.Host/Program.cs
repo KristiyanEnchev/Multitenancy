@@ -4,7 +4,6 @@ namespace Multitenant.Host
 
     using Multitenant.Host.Startup;
     using Multitenant.Infrastructure.Extensions.Logging;
-    using Multitenant.Infrastructure.Extensions.Initializer;
     using Multitenant.Infrastructure;
     using Multitenant.WEB;
 
@@ -24,7 +23,7 @@ namespace Multitenant.Host
 
                 var app = builder.Build();
 
-                //await app.Services.InitializeDatabasesAsync();
+                await app.Services.InitializeDatabasesAsync();
 
                 app.UseInfrastructure(builder.Configuration);
                 app.UseWEB(builder.Configuration);
