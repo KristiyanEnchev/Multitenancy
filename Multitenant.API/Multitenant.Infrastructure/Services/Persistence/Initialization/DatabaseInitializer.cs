@@ -50,8 +50,8 @@
                 };
 
             // Then run the initialization in the new scope
-            await scope.ServiceProvider.GetRequiredService<AppInitializer>()
-                .InitializeAsync(cancellationToken);
+            //await scope.ServiceProvider.GetRequiredService<AppInitializer>()
+            //    .InitializeAsync(cancellationToken);
         }
 
         private async Task InitializeTenantDbAsync(CancellationToken cancellationToken)

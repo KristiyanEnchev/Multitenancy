@@ -1,30 +1,35 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dec04b3a-c2fe-4b59-858e-43e8087bb252</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dec04b3a-c2fe-4b59-858e-43e8087bb252</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="Configurations\swagger.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Remove="Configurations\swagger.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
-    <PackageReference Include="Serilog" Version="3.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+		<PackageReference Include="Serilog" Version="3.0.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="Configurations\swagger.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="Configurations\swagger.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Multitenant.Infrastructure\Multitenant.Infrastructure.csproj" />
-    <ProjectReference Include="..\Multitenant.WEB\Multitenant.WEB.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Migrators\Migrators.MSSQL\Migrators.MSSQL.csproj" />
+		<ProjectReference Include="..\Migrators\Migrators.MySQL\Migrators.MySQL.csproj" />
+		<ProjectReference Include="..\Migrators\Migrators.Oracle\Migrators.Oracle.csproj" />
+		<ProjectReference Include="..\Migrators\Migrators.PostgreSQL\Migrators.PostgreSQL.csproj" />
+		<ProjectReference Include="..\Migrators\Migrators.SqLite\Migrators.SqLite.csproj" />
+		<ProjectReference Include="..\Multitenant.Infrastructure\Multitenant.Infrastructure.csproj" />
+		<ProjectReference Include="..\Multitenant.WEB\Multitenant.WEB.csproj" />
+	</ItemGroup>
 
 </Project>

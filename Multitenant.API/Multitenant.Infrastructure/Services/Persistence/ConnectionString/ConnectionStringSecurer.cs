@@ -10,9 +10,10 @@ namespace Multitenant.Infrastructure.Services.Persistence.ConnectionString
     using Npgsql;
 
     using Oracle.ManagedDataAccess.Client;
-    using Multitenant.Application.Interfaces.Persistance;
+
     using Multitenant.Models.Persistence;
     using Multitenant.Shared.Persistance;
+    using Multitenant.Application.Interfaces.Persistance;
 
     public class ConnectionStringSecurer : IConnectionStringSecurer
     {

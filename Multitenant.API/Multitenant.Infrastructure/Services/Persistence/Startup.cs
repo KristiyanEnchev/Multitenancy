@@ -14,7 +14,7 @@ namespace Multitenant.Infrastructure.Services.Persistence
     using Multitenant.Application.Interfaces.Persistance;
     using Multitenant.Infrastructure.Extensions.Service;
     using Multitenant.Infrastructure.Services.Tenant.Context;
-    using Multitenant.Infrastructure.Services.Persistence.Repository;
+    //using Multitenant.Infrastructure.Services.Persistence.Repository;
     using Multitenant.Infrastructure.Services.Persistence.Initialization;
     using Multitenant.Infrastructure.Services.Persistence.ConnectionString;
 
@@ -33,23 +33,23 @@ namespace Multitenant.Infrastructure.Services.Persistence
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
-            return services
-                .AddDbContext<ApplicationDbContext>((p, m) =>
-                {
-                    var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-                    m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
-                })
+            //return services
+            //    .AddDbContext<ApplicationDbContext>((p, m) =>
+            //    {
+            //        var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+            //        m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
+            //    })
 
-                .AddTransient<IDatabaseInitializer, DatabaseInitializer>()
-                .AddTransient<AppInitializer>()
-                .AddTransient<ApplicationDbSeeder>()
+            return services.AddTransient<IDatabaseInitializer, DatabaseInitializer>()
+                //.AddTransient<AppInitializer>()
+                //.AddTransient<ApplicationDbSeeder>()
                 .AddServices(typeof(ICustomSeeder), ServiceLifetime.Transient)
                 .AddTransient<CustomSeederRunner>()
 
                 .AddTransient<IConnectionStringSecurer, ConnectionStringSecurer>()
-                .AddTransient<IConnectionStringValidator, ConnectionStringValidator>()
+                .AddTransient<IConnectionStringValidator, ConnectionStringValidator>();
 
-                .AddRepositories();
+            //.AddRepositories();
         }
 
         internal static DbContextOptionsBuilder UseDatabase(this DbContextOptionsBuilder builder, string dbProvider, string connectionString)
@@ -71,29 +71,29 @@ namespace Multitenant.Infrastructure.Services.Persistence
             };
         }
 
-        private static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
-            // Add Repositories
-            services.AddScoped(typeof(IRepository<>), typeof(ApplicationDbRepository<>));
+        //private static IServiceCollection AddRepositories(this IServiceCollection services)
+        //{
+        //    // Add Repositories
+        //    services.AddScoped(typeof(IRepository<>), typeof(ApplicationDbRepository<>));
 
-            foreach (var aggregateRootType in
-                typeof(IAggregateRoot).Assembly.GetExportedTypes()
-                    .Where(t => typeof(IAggregateRoot).IsAssignableFrom(t) && t.IsClass)
-                    .ToList())
-            {
-                // Add ReadRepositories.
-                services.AddScoped(typeof(IReadRepository<>).MakeGenericType(aggregateRootType), sp =>
-                    sp.GetRequiredService(typeof(IRepository<>).MakeGenericType(aggregateRootType)));
+        //    foreach (var aggregateRootType in
+        //        typeof(IAggregateRoot).Assembly.GetExportedTypes()
+        //            .Where(t => typeof(IAggregateRoot).IsAssignableFrom(t) && t.IsClass)
+        //            .ToList())
+        //    {
+        //        // Add ReadRepositories.
+        //        services.AddScoped(typeof(IReadRepository<>).MakeGenericType(aggregateRootType), sp =>
+        //            sp.GetRequiredService(typeof(IRepository<>).MakeGenericType(aggregateRootType)));
 
-                // Decorate the repositories with EventAddingRepositoryDecorators and expose them as IRepositoryWithEvents.
-                services.AddScoped(typeof(IRepositoryWithEvents<>).MakeGenericType(aggregateRootType), sp =>
-                    Activator.CreateInstance(
-                        typeof(EventAddingRepositoryDecorator<>).MakeGenericType(aggregateRootType),
-                        sp.GetRequiredService(typeof(IRepository<>).MakeGenericType(aggregateRootType)))
-                    ?? throw new InvalidOperationException($"Couldn't create EventAddingRepositoryDecorator for aggregateRootType {aggregateRootType.Name}"));
-            }
+        //        // Decorate the repositories with EventAddingRepositoryDecorators and expose them as IRepositoryWithEvents.
+        //        services.AddScoped(typeof(IRepositoryWithEvents<>).MakeGenericType(aggregateRootType), sp =>
+        //            Activator.CreateInstance(
+        //                typeof(EventAddingRepositoryDecorator<>).MakeGenericType(aggregateRootType),
+        //                sp.GetRequiredService(typeof(IRepository<>).MakeGenericType(aggregateRootType)))
+        //            ?? throw new InvalidOperationException($"Couldn't create EventAddingRepositoryDecorator for aggregateRootType {aggregateRootType.Name}"));
+        //    }
 
-            return services;
-        }
+        //    return services;
+        //}
     }
 }

@@ -8,11 +8,12 @@
     using Serilog;
     using Serilog.Context;
 
+    using ElmahCore;
+
     using Multitenant.Models.Error;
     using Multitenant.Application.Exceptions;
     using Multitenant.Application.Interfaces.Utility.User;
     using Multitenant.Application.Interfaces.Utility.Serializer;
-    using Newtonsoft.Json;
 
     public class ExceptionMiddleware : IMiddleware
     {
@@ -33,6 +34,8 @@
             }
             catch (Exception exception)
             {
+                await context.RaiseError(exception);
+
                 string email = _currentUser.GetUserEmail() is string userEmail ? userEmail : "Anonymous";
                 var userId = _currentUser.GetUserId();
                 string tenant = _currentUser.GetTenant() ?? string.Empty;

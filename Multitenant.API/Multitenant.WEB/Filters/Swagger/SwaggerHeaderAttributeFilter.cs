@@ -4,8 +4,10 @@
 
     using Microsoft.OpenApi.Any;
     using Microsoft.OpenApi.Models;
-    using Multitenant.WEB.Attributes;
+
     using Swashbuckle.AspNetCore.SwaggerGen;
+
+    using Multitenant.WEB.Attributes;
 
     public class SwaggerHeaderAttributeFilter : IOperationFilter
     {
