@@ -13,6 +13,7 @@
     using Multitenant.WEB.Extensions.Healtchecks;
     using Multitenant.WEB.Extensions.Swagger;
     using Multitenant.WEB.Middlewares;
+    using Multitenant.WEB.Extensions.Permissions;
 
     public static class Startup
     {
@@ -21,7 +22,7 @@
             services.AddHttpContextAccessor();
             services.AddControllers();
             services
-                .AddJWTAuthentiation()
+                .AddAuth(config)
                 .AddCurrentUser()
                 .AddExceptionMiddleware()
                 .AddMediatR(Assembly.GetExecutingAssembly())

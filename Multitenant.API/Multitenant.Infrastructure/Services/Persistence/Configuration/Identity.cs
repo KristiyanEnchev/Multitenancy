@@ -1,71 +1,74 @@
-﻿//namespace Multitenant.Infrastructure.Persistence.Configuration
-//{
-//    using Microsoft.AspNetCore.Identity;
-//    using Microsoft.EntityFrameworkCore;
-//    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿namespace Multitenant.Infrastructure.Services.Persistence.Configuration
+{
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-//    using Finbuckle.MultiTenant.EntityFrameworkCore;
+    using Finbuckle.MultiTenant.EntityFrameworkCore;
 
-//    public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
-//    {
-//        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
-//        {
-//            builder
-//                .ToTable("Users", SchemaNames.Identity)
-//                .IsMultiTenant();
+    using Multitenant.Domain.Entities.Identity;
+    using Multitenant.Models.Persistence;
 
-//            builder
-//                .Property(u => u.ObjectId)
-//                    .HasMaxLength(256);
-//        }
-//    }
+    public class ApplicationUserConfig : IEntityTypeConfiguration<User>
+    {
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder
+                .ToTable("Users", SchemaNames.Identity)
+                .IsMultiTenant();
 
-//    public class ApplicationRoleConfig : IEntityTypeConfiguration<ApplicationRole>
-//    {
-//        public void Configure(EntityTypeBuilder<ApplicationRole> builder) =>
-//            builder
-//                .ToTable("Roles", SchemaNames.Identity)
-//                .IsMultiTenant()
-//                    .AdjustUniqueIndexes();
-//    }
+            builder
+                .Property(u => u.ObjectId)
+                    .HasMaxLength(256);
+        }
+    }
 
-//    public class ApplicationRoleClaimConfig : IEntityTypeConfiguration<ApplicationRoleClaim>
-//    {
-//        public void Configure(EntityTypeBuilder<ApplicationRoleClaim> builder) =>
-//            builder
-//                .ToTable("RoleClaims", SchemaNames.Identity)
-//                .IsMultiTenant();
-//    }
+    public class ApplicationRoleConfig : IEntityTypeConfiguration<UserRole>
+    {
+        public void Configure(EntityTypeBuilder<UserRole> builder) =>
+            builder
+                .ToTable("Roles", SchemaNames.Identity)
+                .IsMultiTenant()
+                    .AdjustUniqueIndexes();
+    }
 
-//    public class IdentityUserRoleConfig : IEntityTypeConfiguration<IdentityUserRole<string>>
-//    {
-//        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder) =>
-//            builder
-//                .ToTable("UserRoles", SchemaNames.Identity)
-//                .IsMultiTenant();
-//    }
+    public class ApplicationRoleClaimConfig : IEntityTypeConfiguration<RoleClaim>
+    {
+        public void Configure(EntityTypeBuilder<RoleClaim> builder) =>
+            builder
+                .ToTable("RoleClaims", SchemaNames.Identity)
+                .IsMultiTenant();
+    }
 
-//    public class IdentityUserClaimConfig : IEntityTypeConfiguration<IdentityUserClaim<string>>
-//    {
-//        public void Configure(EntityTypeBuilder<IdentityUserClaim<string>> builder) =>
-//            builder
-//                .ToTable("UserClaims", SchemaNames.Identity)
-//                .IsMultiTenant();
-//    }
+    public class IdentityUserRoleConfig : IEntityTypeConfiguration<IdentityUserRole<string>>
+    {
+        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder) =>
+            builder
+                .ToTable("UserRoles", SchemaNames.Identity)
+                .IsMultiTenant();
+    }
 
-//    public class IdentityUserLoginConfig : IEntityTypeConfiguration<IdentityUserLogin<string>>
-//    {
-//        public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder) =>
-//            builder
-//                .ToTable("UserLogins", SchemaNames.Identity)
-//                .IsMultiTenant();
-//    }
+    public class IdentityUserClaimConfig : IEntityTypeConfiguration<IdentityUserClaim<string>>
+    {
+        public void Configure(EntityTypeBuilder<IdentityUserClaim<string>> builder) =>
+            builder
+                .ToTable("UserClaims", SchemaNames.Identity)
+                .IsMultiTenant();
+    }
 
-//    public class IdentityUserTokenConfig : IEntityTypeConfiguration<IdentityUserToken<string>>
-//    {
-//        public void Configure(EntityTypeBuilder<IdentityUserToken<string>> builder) =>
-//            builder
-//                .ToTable("UserTokens", SchemaNames.Identity)
-//                .IsMultiTenant();
-//    }
-//}
+    public class IdentityUserLoginConfig : IEntityTypeConfiguration<IdentityUserLogin<string>>
+    {
+        public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder) =>
+            builder
+                .ToTable("UserLogins", SchemaNames.Identity)
+                .IsMultiTenant();
+    }
+
+    public class IdentityUserTokenConfig : IEntityTypeConfiguration<IdentityUserToken<string>>
+    {
+        public void Configure(EntityTypeBuilder<IdentityUserToken<string>> builder) =>
+            builder
+                .ToTable("UserTokens", SchemaNames.Identity)
+                .IsMultiTenant();
+    }
+}

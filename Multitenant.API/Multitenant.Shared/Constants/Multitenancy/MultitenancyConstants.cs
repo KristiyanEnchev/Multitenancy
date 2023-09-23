@@ -4,8 +4,8 @@ namespace Multitenant.Shared.Constants.Multitenancy
     {
         public static class Root
         {
-            public const string Id = "main";
-            public const string Name = "Main";
+            public const string Id = "root";
+            public const string Name = "Root";
             public const string EmailAddress = "admin@main.com";
         }
 

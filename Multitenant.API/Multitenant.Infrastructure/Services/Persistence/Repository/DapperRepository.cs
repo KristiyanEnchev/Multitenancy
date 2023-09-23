@@ -1,46 +1,46 @@
-//namespace Multitenant.Infrastructure.Services.Persistence.Repository
-//{
-//    using System.Data;
+namespace Multitenant.Infrastructure.Services.Persistence.Repository
+{
+    using System.Data;
 
-//    using Dapper;
+    using Dapper;
 
-//    using Finbuckle.MultiTenant.EntityFrameworkCore;
+    using Finbuckle.MultiTenant.EntityFrameworkCore;
 
-//    using Multitenant.Domain.Contracts;
-//    using Multitenant.Application.Interfaces.Persistance;
-//    using Multitenant.Infrastructure.Services.Tenant.Context;
+    using Multitenant.Domain.Contracts;
+    using Multitenant.Application.Interfaces.Persistance;
+    using Multitenant.Infrastructure.Services.Tenant.Context;
 
-//    public class DapperRepository : IDapperRepository
-//    {
-//        private readonly ApplicationDbContext _dbContext;
+    public class DapperRepository : IDapperRepository
+    {
+        private readonly ApplicationDbContext _dbContext;
 
-//        public DapperRepository(ApplicationDbContext dbContext) => _dbContext = dbContext;
+        public DapperRepository(ApplicationDbContext dbContext) => _dbContext = dbContext;
 
-//        public async Task<IReadOnlyList<T>> QueryAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
-//        where T : class, IEntity =>
-//            (await _dbContext.Connection.QueryAsync<T>(sql, param, transaction))
-//                .AsList();
+        public async Task<IReadOnlyList<T>> QueryAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
+        where T : class, IEntity =>
+            (await _dbContext.Connection.QueryAsync<T>(sql, param, transaction))
+                .AsList();
 
-//        public async Task<T?> QueryFirstOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
-//        where T : class, IEntity
-//        {
-//            if (_dbContext.Model.GetMultiTenantEntityTypes().Any(t => t.ClrType == typeof(T)))
-//            {
-//                sql = sql.Replace("@tenant", _dbContext.TenantInfo.Id);
-//            }
+        public async Task<T?> QueryFirstOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
+        where T : class, IEntity
+        {
+            if (_dbContext.Model.GetMultiTenantEntityTypes().Any(t => t.ClrType == typeof(T)))
+            {
+                sql = sql.Replace("@tenant", _dbContext.TenantInfo.Id);
+            }
 
-//            return await _dbContext.Connection.QueryFirstOrDefaultAsync<T>(sql, param, transaction);
-//        }
+            return await _dbContext.Connection.QueryFirstOrDefaultAsync<T>(sql, param, transaction);
+        }
 
-//        public Task<T> QuerySingleAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
-//        where T : class, IEntity
-//        {
-//            if (_dbContext.Model.GetMultiTenantEntityTypes().Any(t => t.ClrType == typeof(T)))
-//            {
-//                sql = sql.Replace("@tenant", _dbContext.TenantInfo.Id);
-//            }
+        public Task<T> QuerySingleAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
+        where T : class, IEntity
+        {
+            if (_dbContext.Model.GetMultiTenantEntityTypes().Any(t => t.ClrType == typeof(T)))
+            {
+                sql = sql.Replace("@tenant", _dbContext.TenantInfo.Id);
+            }
 
-//            return _dbContext.Connection.QuerySingleAsync<T>(sql, param, transaction);
-//        }
-//    }
-//}
+            return _dbContext.Connection.QuerySingleAsync<T>(sql, param, transaction);
+        }
+    }
+}

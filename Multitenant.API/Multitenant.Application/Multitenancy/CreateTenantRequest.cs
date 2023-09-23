@@ -1,6 +1,7 @@
 namespace Multitenant.Application.Multitenancy
 {
     using MediatR;
+
     using Multitenant.Application.Interfaces.Tenant;
 
     public class CreateTenantRequest : IRequest<string>

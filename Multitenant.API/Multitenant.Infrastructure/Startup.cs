@@ -8,6 +8,8 @@
 
     using ElmahCore.Mvc;
 
+    using Multitenant.Application;
+    using Multitenant.Application.Interfaces.Persistance;
     using Multitenant.Infrastructure.Extensions.Cors;
     using Multitenant.Infrastructure.Extensions.Elmah;
     using Multitenant.Infrastructure.Extensions.SecurityHeaders;
@@ -16,9 +18,8 @@
     using Multitenant.Infrastructure.Extensions.Service;
     using Multitenant.Infrastructure.Extensions.Mapping;
     using Multitenant.Infrastructure.Services.Persistence;
-    using Multitenant.Application;
     using Multitenant.Infrastructure.Extensions.Tenant;
-    using Multitenant.Application.Interfaces.Persistance;
+    using Multitenant.Infrastructure.Services.Identity;
 
     public static class Startup
     {
@@ -30,8 +31,6 @@
             MapsterSettings.Configure();
             return services
                 .AddVersioning()
-                //.AddAuth(config)
-                //.AddBackgroundJobs(config)
                 //.AddCaching(config)
                 .AddCorsPolicy(config)
                 .AddBehaviours(applicationAssembly)
@@ -39,6 +38,7 @@
                 //.AddNotifications(config)
                 .AddElmahConfig(config)
                 .AddPersistence()
+                .AddIdentity()
                 .AddServices();
 
         }
@@ -56,10 +56,8 @@
             builder
                 .UseStaticFiles()
                 .UseSecurityHeaders(config)
-                //.UseFileStorage()
                 .UseCorsPolicy()
                 .UseMultiTenancy()
                 .UseElmah();
-        //.UseHangfireDashboard(config);
     }
 }
