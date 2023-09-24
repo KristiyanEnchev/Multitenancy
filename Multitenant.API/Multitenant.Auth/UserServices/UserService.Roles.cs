@@ -7,7 +7,7 @@
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.Shared.Constants.Multitenancy;
     using Multitenant.Application.Exceptions;
-    using Multitenant.Application.Identity.User;
+    using Multitenant.Application.Identity.UserRequests;
 
     public partial class UserService
     {

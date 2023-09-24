@@ -8,9 +8,9 @@
 
     using Multitenant.Domain.Events;
     using Multitenant.Application.Exceptions;
-    using Multitenant.Application.Identity.User;
     using Multitenant.Domain.Entities.Identity;
     using Multitenant.Shared.ClaimsPrincipal;
+    using Multitenant.Application.Identity.UserRequests;
 
     public partial class UserService
     {

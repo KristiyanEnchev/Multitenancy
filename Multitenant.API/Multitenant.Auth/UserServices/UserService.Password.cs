@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.WebUtilities;
 
     using Multitenant.Application.Exceptions;
-    using Multitenant.Application.Identity.User.Password;
+    using Multitenant.Application.Identity.UserRequests.Password;
 
     public partial class UserService
     {

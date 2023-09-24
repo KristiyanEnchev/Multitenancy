@@ -19,10 +19,10 @@
     using Multitenant.Application.Response;
     using Multitenant.Application.Exceptions;
     using Multitenant.Application.Specification;
-    using Multitenant.Application.Identity.User;
     using Multitenant.Application.Interfaces.Cache;
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Infrastructure.Services.Tenant.Context;
+    using Multitenant.Application.Identity.UserRequests;
 
     public partial class UserService : IUserService
     {

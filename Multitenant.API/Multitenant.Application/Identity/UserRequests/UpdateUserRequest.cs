@@ -1,4 +1,4 @@
-namespace Multitenant.Application.Identity.User
+namespace Multitenant.Application.Identity.UserRequests
 {
     public class UpdateUserRequest
     {
