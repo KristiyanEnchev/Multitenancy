@@ -1,4 +1,4 @@
-﻿namespace Multitenant.WEB.Controllers
+﻿namespace Multitenant.WEB.Controllers.Identity
 {
     using System.Net;
 

@@ -5,8 +5,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
 
-    using Swashbuckle.AspNetCore.SwaggerUI;
-
     using Multitenant.Models.Swagger;
     using Multitenant.WEB.Filters.Swagger;
 
@@ -33,18 +31,18 @@
                     //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
-                    //c.SwaggerDoc(settings.Version, new OpenApiInfo
-                    //{
-                    //    Version = settings.Version,
-                    //    Title = settings.Title,
-                    //    Description = settings.Description,
-                    //    Contact = new OpenApiContact
-                    //    {
-                    //        Name = settings.Contact?.Name ?? "",
-                    //        Email = settings.Contact?.Email ?? "",
-                    //        Url = settings.Contact?.Url != null ? new Uri(settings.Contact.Url) : null
-                    //    }
-                    //});
+                    c.SwaggerDoc(settings.Version, new OpenApiInfo
+                    {
+                        Version = settings.Version,
+                        Title = settings.Title,
+                        Description = settings.Description,
+                        Contact = new OpenApiContact
+                        {
+                            Name = settings.Contact?.Name ?? "",
+                            Email = settings.Contact?.Email ?? "",
+                            Url = settings.Contact?.Url != null ? new Uri(settings.Contact.Url) : null
+                        }
+                    });
 
                     if (configuration["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
                     {
@@ -123,16 +121,18 @@
 
         public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app, IConfiguration config)
         {
-            if (config.GetValue<bool>("SwaggerSettings:Enable"))
+            SwaggerSettings settings = config.GetSection(nameof(SwaggerSettings)).Get<SwaggerSettings>()!;
+
+            if (settings.Enable)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Multitenant.API");
+                    options.SwaggerEndpoint($"/swagger/{settings.Version}/swagger.json", $"{settings.Title}");
 
                     // Customize Swagger UI options
-                    options.DefaultModelsExpandDepth(-1);
-                    options.DocExpansion(DocExpansion.None);
+                    //options.DefaultModelsExpandDepth(-1);
+                    //options.DocExpansion(DocExpansion.None);
 
                     if (config["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
                     {

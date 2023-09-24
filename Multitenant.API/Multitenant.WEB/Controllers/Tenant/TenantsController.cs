@@ -1,0 +1,74 @@
+namespace Multitenant.WEB.Controllers
+{
+    using Microsoft.AspNetCore.Mvc;
+
+    using Swashbuckle.AspNetCore.Annotations;
+
+    using Multitenant.Models.Tenant;
+    using Multitenant.Shared.ClaimsPrincipal;
+    using Multitenant.Application.Multitenancy;
+    using Multitenant.WEB.Extensions.Permissions;
+    using Microsoft.AspNetCore.Authorization;
+
+    public class TenantsController : VersionNeutralApiController
+    {
+        [HttpGet]
+        //[MustHavePermission(Action.View, Resource.Tenants)]
+        [SwaggerOperation("Get a list of all tenants.", "")]
+        [AllowAnonymous]
+        public Task<List<TenantDto>> GetListAsync()
+        {
+            return Mediator.Send(new GetAllTenantsRequest());
+        }
+
+        [HttpGet("{id}")]
+        //[MustHavePermission(Action.View, Resource.Tenants)]
+        [SwaggerOperation("Get tenant details.", "")]
+        [AllowAnonymous]
+        public Task<TenantDto> GetAsync(string id)
+        {
+            return Mediator.Send(new GetTenantRequest(id));
+        }
+
+        [HttpPost]
+        //[MustHavePermission(Action.Create, Resource.Tenants)]
+        [SwaggerOperation("Create a new tenant.", "")]
+        [AllowAnonymous]
+        public Task<string> CreateAsync(CreateTenantRequest request)
+        {
+            return Mediator.Send(request);
+        }
+
+        [HttpPost("{id}/activate")]
+        //[MustHavePermission(Action.Update, Resource.Tenants)]
+        [SwaggerOperation("Activate a tenant.", "")]
+        [AllowAnonymous]
+        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+        public Task<string> ActivateAsync(string id)
+        {
+            return Mediator.Send(new ActivateTenantRequest(id));
+        }
+
+        [HttpPost("{id}/deactivate")]
+        //[MustHavePermission(Action.Update, Resource.Tenants)]
+        [SwaggerOperation("Deactivate a tenant.", "")]
+        [AllowAnonymous]
+        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+        public Task<string> DeactivateAsync(string id)
+        {
+            return Mediator.Send(new DeactivateTenantRequest(id));
+        }
+
+        [HttpPost("{id}/upgrade")]
+        //[MustHavePermission(Action.UpgradeSubscription, Resource.Tenants)]
+        [SwaggerOperation("Upgrade a tenant's subscription.", "")]
+        [AllowAnonymous]
+        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+        public async Task<ActionResult<string>> UpgradeSubscriptionAsync(string id, UpgradeSubscriptionRequest request)
+        {
+            return id != request.TenantId
+                ? BadRequest()
+                : Ok(await Mediator.Send(request));
+        }
+    }
+}

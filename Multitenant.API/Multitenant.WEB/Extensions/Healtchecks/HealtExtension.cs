@@ -28,14 +28,14 @@
             if (tenantHealthChecks != null && (bool)tenantHealthChecks)
             {
                 healthChecks
-                    .AddSqlServer(configuration.GetTenantConnectionString());
+                    .AddSqlServer(configuration.GetTenantConnectionString(), name: "Tenant Database");
             }
 
-            //if (databaseHealthChecks != null && (bool)databaseHealthChecks)
-            //{
-            //    healthChecks
-            //        .AddSqlServer(configuration.GetDbConnectionString());
-            //}
+            if (databaseHealthChecks != null && (bool)databaseHealthChecks)
+            {
+                healthChecks
+                    .AddSqlServer(configuration.GetDbConnectionString(), name: "Identity Database");
+            }
 
             if (memoryCacheHealthChecks != null && (bool)memoryCacheHealthChecks)
             {

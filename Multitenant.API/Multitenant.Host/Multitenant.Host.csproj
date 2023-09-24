@@ -32,4 +32,8 @@
 		<ProjectReference Include="..\Multitenant.WEB\Multitenant.WEB.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Logs\" />
+	</ItemGroup>
+
 </Project>
