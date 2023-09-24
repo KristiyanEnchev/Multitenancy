@@ -1,7 +1,8 @@
 {
   "DatabaseSettings": {
     "DBProvider": "mssql",
-    "ConnectionString": "Server=.;Database=Multitenant;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
-    "TenantConnectionString": "Server=.;Database=Tenants;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false"
+    "ConnectionString": "Server=.;Database=Tenants;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false"
+    //"ConnectionString": "Server=.;Database=Tenant.Root;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false"
+    //"TenantConnectionString": "Server=.;Database=Tenants;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false"
   }
 }

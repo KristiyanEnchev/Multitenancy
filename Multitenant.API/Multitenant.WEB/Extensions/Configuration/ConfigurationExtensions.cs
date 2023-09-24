@@ -14,7 +14,7 @@
         public static string GetTenantConnectionString(this IConfiguration configuration)
         {
             var settings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
-            return settings?.TenantConnectionString;
+            return settings?.ConnectionString;
         }
 
         public static string GetRedisConnectionString(this IConfiguration configuration)

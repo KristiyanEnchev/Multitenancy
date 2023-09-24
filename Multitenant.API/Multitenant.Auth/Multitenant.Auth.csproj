@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Identity.Web" Version="2.13.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Multitenant.Application\Multitenant.Application.csproj" />
+		<ProjectReference Include="..\Multitenant.Infrastructure\Multitenant.Infrastructure.csproj" />
+	</ItemGroup>
+
+</Project>

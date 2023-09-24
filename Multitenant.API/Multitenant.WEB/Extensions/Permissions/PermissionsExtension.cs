@@ -8,8 +8,8 @@
         public static IServiceCollection AddPermissions(this IServiceCollection services)
         {
             return services
-            .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-            //.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
+            .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         }
     }
 }

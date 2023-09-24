@@ -6,7 +6,7 @@
     {
         public string DBProvider { get; set; } = string.Empty;
         public string ConnectionString { get; set; } = string.Empty;
-        public string TenantConnectionString { get; set; } = string.Empty;
+        //public string TenantConnectionString { get; set; } = string.Empty;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -24,12 +24,12 @@
                     new[] { nameof(ConnectionString) });
             }
 
-            if (string.IsNullOrEmpty(TenantConnectionString))
-            {
-                yield return new ValidationResult(
-                    $"{nameof(DatabaseSettings)}.{nameof(TenantConnectionString)} is not configured",
-                    new[] { nameof(TenantConnectionString) });
-            }
+            //if (string.IsNullOrEmpty(TenantConnectionString))
+            //{
+            //    yield return new ValidationResult(
+            //        $"{nameof(DatabaseSettings)}.{nameof(TenantConnectionString)} is not configured",
+            //        new[] { nameof(TenantConnectionString) });
+            //}
         }
     }
 }

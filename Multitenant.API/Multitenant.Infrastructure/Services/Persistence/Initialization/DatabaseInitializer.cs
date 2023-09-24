@@ -34,7 +34,6 @@
             }
 
             _logger.LogInformation("For documentations and guides, visit ...");
-            _logger.LogInformation("To Sponsor this project, visit ...");
         }
 
         public async Task InitializeApplicationDbForTenantAsync(MultiTenantInfo tenant, CancellationToken cancellationToken)

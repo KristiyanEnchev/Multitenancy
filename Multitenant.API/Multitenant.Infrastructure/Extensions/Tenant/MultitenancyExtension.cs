@@ -23,7 +23,7 @@
                 .AddDbContext<TenantDbContext>((p, m) =>
                 {
                     var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-                    m.UseDatabase(databaseSettings.DBProvider, databaseSettings.TenantConnectionString);
+                    m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
                 })
                 .AddMultiTenant<MultiTenantInfo>()
                     .WithClaimStrategy(LocalAppClaims.Tenant)

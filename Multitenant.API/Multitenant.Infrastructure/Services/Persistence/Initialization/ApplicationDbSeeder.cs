@@ -77,6 +77,7 @@
                         RoleId = role.Id,
                         ClaimType = LocalAppClaims.Permission,
                         ClaimValue = permission.Name,
+                        CreatedOn = DateTime.UtcNow,
                         CreatedBy = "ApplicationDbSeeder"
                     });
                     await dbContext.SaveChangesAsync();

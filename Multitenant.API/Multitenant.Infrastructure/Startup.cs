@@ -31,7 +31,7 @@
             MapsterSettings.Configure();
             return services
                 .AddVersioning()
-                //.AddCaching(config)
+                .AddCaching(config)
                 .AddCorsPolicy(config)
                 .AddBehaviours(applicationAssembly)
                 .AddMultitenancy()

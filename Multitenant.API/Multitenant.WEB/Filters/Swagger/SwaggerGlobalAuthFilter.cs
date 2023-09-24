@@ -30,19 +30,19 @@
                 }
 
                 var securityRequirement = new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = _authenticationScheme
-                        }
-                    },
-                    new List<string>()
-                }
-            };
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = _authenticationScheme
+                            }
+                        },
+                        new List<string>()
+                    }
+                };
 
                 operation.Security.Add(securityRequirement);
             }

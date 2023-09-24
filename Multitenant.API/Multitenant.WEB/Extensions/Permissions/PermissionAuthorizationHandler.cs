@@ -1,23 +1,24 @@
-//namespace Multitenant.WEB.Extensions.Permissions
-//{
-//    using System.Security.Claims;
-//    using Microsoft.AspNetCore.Authorization;
-//    using Multitenant.Shared.ClaimsPrincipal;
+namespace Multitenant.WEB.Extensions.Permissions
+{
+    using Microsoft.AspNetCore.Authorization;
 
-//    internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
-//    {
-//        private readonly IUserService _userService;
+    using Multitenant.Shared.ClaimsPrincipal;
+    using Multitenant.Application.Interfaces.Identity;
 
-//        public PermissionAuthorizationHandler(IUserService userService) =>
-//            _userService = userService;
+    internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
+    {
+        private readonly IUserService _userService;
 
-//        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
-//        {
-//            if (context.User?.GetUserId() is { } userId &&
-//                await _userService.HasPermissionAsync(userId, requirement.Permission))
-//            {
-//                context.Succeed(requirement);
-//            }
-//        }
-//    }
-//}
+        public PermissionAuthorizationHandler(IUserService userService) =>
+            _userService = userService;
+
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
+        {
+            if (context.User?.GetUserId() is { } userId &&
+                await _userService.HasPermissionAsync(userId, requirement.Permission))
+            {
+                context.Succeed(requirement);
+            }
+        }
+    }
+}

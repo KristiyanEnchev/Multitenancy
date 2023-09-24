@@ -1,0 +1,12 @@
+﻿namespace Multitenant.Application.Cache
+{
+    using Multitenant.Domain.Contracts;
+    using Multitenant.Application.Interfaces.Cache;
+
+    public static class CacheKeyServiceExtensions
+    {
+        public static string GetCacheKey<TEntity>(this ICacheKeyService cacheKeyService, object id, bool includeTenantId = true)
+        where TEntity : IEntity =>
+            cacheKeyService.GetCacheKey(typeof(TEntity).Name, id, includeTenantId);
+    }
+}
