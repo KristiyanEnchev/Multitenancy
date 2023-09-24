@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Auth.UserService
+﻿namespace Multitenant.Auth.UserServices
 {
     using Microsoft.Extensions.Options;
     using Microsoft.AspNetCore.Identity;

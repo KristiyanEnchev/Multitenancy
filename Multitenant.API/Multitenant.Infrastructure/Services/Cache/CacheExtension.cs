@@ -3,6 +3,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    using Multitenant.Models.Cache;
     using Multitenant.Application.Interfaces.Cache;
 
     public static class CacheExtension

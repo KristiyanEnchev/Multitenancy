@@ -20,6 +20,7 @@
     using Multitenant.Infrastructure.Services.Persistence;
     using Multitenant.Infrastructure.Extensions.Tenant;
     using Multitenant.Infrastructure.Services.Identity;
+    using Multitenant.Infrastructure.Services.Cache;
 
     public static class Startup
     {
@@ -39,6 +40,7 @@
                 .AddElmahConfig(config)
                 .AddPersistence()
                 .AddIdentity()
+                .AddAuth(config)
                 .AddServices();
 
         }

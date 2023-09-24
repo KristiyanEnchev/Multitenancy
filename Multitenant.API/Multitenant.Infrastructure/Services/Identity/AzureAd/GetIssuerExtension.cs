@@ -1,4 +1,4 @@
-namespace Multitenant.WEB.Extensions.Authentication.AzureAd
+namespace Multitenant.Infrastructure.Services.Identity.AzureAd
 {
     using System.Security.Claims;
 

@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Application.Cache
+﻿namespace Multitenant.Infrastructure.Extensions.Cache
 {
     using Multitenant.Domain.Contracts;
     using Multitenant.Application.Interfaces.Cache;

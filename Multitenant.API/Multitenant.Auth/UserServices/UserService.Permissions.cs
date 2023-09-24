@@ -1,9 +1,10 @@
-﻿namespace Multitenant.Auth.UserService
+﻿namespace Multitenant.Auth.UserServices
 {
     using Microsoft.EntityFrameworkCore;
 
     using Multitenant.Application.Exceptions;
     using Multitenant.Shared.ClaimsPrincipal;
+    using Multitenant.Infrastructure.Extensions.Cache;
 
     public partial class UserService
     {

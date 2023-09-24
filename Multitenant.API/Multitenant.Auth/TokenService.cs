@@ -18,7 +18,6 @@
     using Multitenant.Application.Identity.Token;
     using Multitenant.Application.Interfaces.Identity;
 
-
     public class TokenService : ITokenService
     {
         private readonly UserManager<Multitenant.Domain.Entities.Identity.User> _userManager;
