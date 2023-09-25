@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Application.Identity.UserRequests
+﻿namespace Multitenant.Application.Identity.UserIdentity
 {
     using Multitenant.Application.Response;
 

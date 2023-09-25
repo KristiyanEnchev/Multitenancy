@@ -87,7 +87,7 @@ public partial class InitialMigrations : Migration
                 LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 IsActive = table.Column<bool>(type: "bit", nullable: false),
-                RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                //RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                 ObjectId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                 TenantId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),

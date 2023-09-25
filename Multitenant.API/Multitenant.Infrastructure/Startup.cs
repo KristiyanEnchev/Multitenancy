@@ -29,6 +29,7 @@
             var applicationAssembly = typeof(Multitenant.Application.Startup).GetTypeInfo().Assembly;
             services.AddApplication();
 
+            services.AddHttpClient();
             MapsterSettings.Configure();
             return services
                 .AddVersioning()
@@ -39,9 +40,10 @@
                 //.AddNotifications(config)
                 .AddElmahConfig(config)
                 .AddPersistence()
-                .AddIdentity()
+                //.AddIdentity()
                 .AddAuth(config)
                 .AddServices();
+
 
         }
 

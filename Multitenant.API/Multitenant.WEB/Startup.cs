@@ -9,7 +9,6 @@
 
     using MediatR;
 
-    using Multitenant.WEB.Extensions.Authentication;
     using Multitenant.WEB.Extensions.Healtchecks;
     using Multitenant.WEB.Extensions.Swagger;
     using Multitenant.WEB.Middlewares;
@@ -21,7 +20,6 @@
             services.AddHttpContextAccessor();
             services.AddControllers();
             services
-                .AddAuth(config)
                 .AddCurrentUser()
                 .AddExceptionMiddleware()
                 .AddMediatR(Assembly.GetExecutingAssembly())

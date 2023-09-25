@@ -1,4 +1,4 @@
-namespace Multitenant.Application.Identity.UserRequests.Password
+namespace Multitenant.Application.Identity.UserIdentity.Password
 {
     using FluentValidation;
 

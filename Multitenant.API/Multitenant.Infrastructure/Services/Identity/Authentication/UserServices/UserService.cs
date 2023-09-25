@@ -22,7 +22,7 @@
     using Multitenant.Application.Interfaces.Cache;
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Infrastructure.Services.Tenant.Context;
-    using Multitenant.Application.Identity.UserRequests;
+    using Multitenant.Application.Identity.UserIdentity;
 
     public partial class UserService : IUserService
     {

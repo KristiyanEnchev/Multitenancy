@@ -1,4 +1,4 @@
-﻿namespace Multitenant.WEB.Extensions.Authentication
+﻿namespace Multitenant.Infrastructure.Extensions.Authentication
 {
     using System.Net;
     using System.Text;

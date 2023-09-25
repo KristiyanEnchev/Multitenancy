@@ -8,6 +8,7 @@
     using Multitenant.WEB.Attributes;
     using Multitenant.Application.Identity.Token;
     using Multitenant.Application.Interfaces.Identity;
+    using Multitenant.Application.Identity.UserIdentity;
 
     public class IdentityController : VersionNeutralApiController
     {
@@ -21,17 +22,17 @@
         //    return Ok("Hello");
         //}
 
-        private readonly ITokenService _tokenService;
+        private readonly IAuthService _authService;
 
-        public IdentityController(ITokenService tokenService) => _tokenService = tokenService;
+        public IdentityController(IAuthService tokenService) => _authService = tokenService;
 
         [HttpPost("login")]
         [AllowAnonymous]
         [TenantIdHeader]
         [SwaggerOperation("Request an access token using credentials.", "")]
-        public Task<TokenResponse> GetTokenAsync(TokenRequest request, CancellationToken cancellationToken)
+        public async Task<TokenResponse> GetTokenAsync(TokenRequest request, CancellationToken cancellationToken)
         {
-            return _tokenService.GetTokenAsync(request, GetIpAddress()!, cancellationToken);
+            return await _authService.LoginAsync(request, GetIpAddress()!, cancellationToken);
         }
 
         [HttpPost("refresh")]
@@ -41,8 +42,20 @@
         //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Search))]
         public Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
         {
-            return _tokenService.RefreshTokenAsync(request, GetIpAddress()!);
+            return _authService.RefreshTokenAsync(request, GetIpAddress()!);
         }
+
+        [HttpPost("register")]
+        [TenantIdHeader]
+        [AllowAnonymous]
+        [SwaggerOperation("Anonymous user creates a user.", "")]
+        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+        public Task<string> SelfRegisterAsync(CreateUserRequest request)
+        {
+            return _authService.CreateAsync(request, GetOriginFromRequest());
+        }
+
+        private string GetOriginFromRequest() => $"{Request.Scheme}://{Request.Host.Value}{Request.PathBase.Value}";
 
         private string? GetIpAddress() =>
             Request.Headers.ContainsKey("X-Forwarded-For")
