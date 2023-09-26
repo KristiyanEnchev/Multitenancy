@@ -9,5 +9,6 @@
         Task<TokenResponse> LoginAsync(TokenRequest request, string ipAddress, CancellationToken cancellationToken);
         Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string ipAddress);
         Task<string> CreateAsync(CreateUserRequest request, string origin);
+        Task<bool> LogoutAsync(string userEmail);
     }
 }

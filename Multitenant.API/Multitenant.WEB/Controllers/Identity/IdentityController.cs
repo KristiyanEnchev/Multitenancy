@@ -12,19 +12,18 @@
 
     public class IdentityController : VersionNeutralApiController
     {
-        //[HttpPost]
-        //[Route(nameof(Login))]
-        //[AllowAnonymous]
-        //[TenantIdHeader]
-        //public async Task<ActionResult<string>> Login()
-        //{
-        //    throw new CustomException("Alooo logvash li", new List<string> { "logva li ne logva li nz" }, HttpStatusCode.BadRequest);
-        //    return Ok("Hello");
-        //}
-
         private readonly IAuthService _authService;
 
         public IdentityController(IAuthService tokenService) => _authService = tokenService;
+
+        [HttpPost("register")]
+        [TenantIdHeader]
+        [AllowAnonymous]
+        [SwaggerOperation("SelfRegister a user.", "")]
+        public Task<string> SelfRegisterAsync(CreateUserRequest request)
+        {
+            return _authService.CreateAsync(request, GetOriginFromRequest());
+        }
 
         [HttpPost("login")]
         [AllowAnonymous]
@@ -39,20 +38,18 @@
         [AllowAnonymous]
         [TenantIdHeader]
         [SwaggerOperation("Request an access token using a refresh token.", "")]
-        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Search))]
         public Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
         {
             return _authService.RefreshTokenAsync(request, GetIpAddress()!);
         }
 
-        [HttpPost("register")]
-        [TenantIdHeader]
+        [HttpPost("logout")]
         [AllowAnonymous]
-        [SwaggerOperation("Anonymous user creates a user.", "")]
-        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-        public Task<string> SelfRegisterAsync(CreateUserRequest request)
+        [TenantIdHeader]
+        [SwaggerOperation("Logs out a user", "")]
+        public Task<bool> LogoutAsync(string email)
         {
-            return _authService.CreateAsync(request, GetOriginFromRequest());
+            return _authService.LogoutAsync(email);
         }
 
         private string GetOriginFromRequest() => $"{Request.Scheme}://{Request.Host.Value}{Request.PathBase.Value}";
