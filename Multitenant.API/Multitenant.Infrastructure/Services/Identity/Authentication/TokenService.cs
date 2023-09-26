@@ -248,6 +248,8 @@
             handler.OutboundClaimTypeMap.Add(ClaimTypes.Email, "Email");
 
             var token = new JwtSecurityToken(
+               issuer: _jwtSettings.Issuer,
+               audience: _jwtSettings.Audience,
                claims: claims,
                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes),
                signingCredentials: signingCredentials);
@@ -265,8 +267,11 @@
                 ValidateAudience = true,
                 RoleClaimType = ClaimTypes.Role,
                 ClockSkew = TimeSpan.Zero,
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                ValidAudience = _jwtSettings.Audience,
+                ValidIssuer = _jwtSettings.Issuer,
             };
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
             if (securityToken is not JwtSecurityToken jwtSecurityToken ||

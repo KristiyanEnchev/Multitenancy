@@ -17,6 +17,7 @@
     using Multitenant.Shared.Persistance;
     using System.Text;
     using Multitenant.Application.Interfaces.Mailing;
+    using Multitenant.Models.Mailing;
 
     public class AuthService : IAuthService
     {
@@ -134,7 +135,32 @@
             var messages = new List<string> { string.Format("User {0} Registered.", user.UserName) };
 
             string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-            var isSuccessfull = await emailService.SendRegistrationEmail(user.Email, user.UserName, emailVerificationUri);
+            var req = new EmailRequest
+            {
+                From = "Alabala@noreply.com",
+                To = "kristiqnenchevv@gmail.com",
+                TemplateName = "email-confirmation",
+                TemplateDataList = new List<TemplateData>
+                {
+                    new TemplateData
+                    {
+                        Key = "UserName",
+                        Value = user.UserName
+                    },
+                    new TemplateData
+                    {
+                        Key = "Email",
+                        Value = user.Email
+                    },
+                     new TemplateData
+                    {
+                        Key = "Url",
+                        Value = emailVerificationUri
+                    }
+                }
+            };
+            var isSuccessfull = await emailService.SendRegistrationEmail(req);
+            //var isSuccessfull = await emailService.SendRegistrationEmail(user.Email, user.UserName, emailVerificationUri);
 
             if (isSuccessfull && isSuccessfull != null)
             {
@@ -168,19 +194,38 @@
 
         private async Task<string> GetEmailVerificationUriAsync(User user, string origin)
         {
+            //string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            //const string route = "api/Auth/ConfirmEmailAsync/";
+
+            //var endpointUri = new Uri(string.Concat($"{origin}/", route));
+
+            //string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id.ToString());
+
+            //verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
+
+            //return verificationUri;
+
+            EnsureValidTenant();
+
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-            const string route = "api/Auth/ConfirmEmailAsync/";
-
+            const string route = "api/identity/confirm-email/";
             var endpointUri = new Uri(string.Concat($"{origin}/", route));
-
-            string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id.ToString());
-
+            string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id);
             verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
-
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant.Id!);
             return verificationUri;
+        }
+
+        private void EnsureValidTenant()
+        {
+            if (string.IsNullOrWhiteSpace(_currentTenant?.Id))
+            {
+                throw new UnauthorizedException("Invalid Tenant.");
+            }
         }
 
         public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string ipAddress)

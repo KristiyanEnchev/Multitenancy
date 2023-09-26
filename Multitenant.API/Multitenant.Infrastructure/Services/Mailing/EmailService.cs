@@ -1,6 +1,7 @@
 ﻿using Multitenant.Application.Interfaces.Mailing;
 using Multitenant.Application.Persistence.Auditing;
 using Multitenant.Domain.Entities.Identity;
+using Multitenant.Models.Mailing;
 using Newtonsoft.Json;
 using System.Security.Policy;
 using System.Text;
@@ -15,17 +16,18 @@ namespace Multitenant.Infrastructure.Services.Mailing
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> SendRegistrationEmail(string email, string username, string uri)
+        public async Task<bool> SendRegistrationEmail(EmailRequest request)
+        //public async Task<bool> SendRegistrationEmail(string email, string username, string uri)
         {
-            var some = new
-            {
-                Email = email,
-                Username = username,
-                Url = uri
-            };
+            //var some = new
+            //{
+            //    Email = email,
+            //    Username = username,
+            //    Url = uri
+            //};
 
-            var content = ConverContent(some);
-            var response = await httpClient.PostAsync("https://localhost:44335/api/Email/smtp-register-confirm", content);
+            var content = ConverContent(request);
+            var response = await httpClient.PostAsync("https://localhost:44335/api/Email/smtp-register", content);
 
             if (!response.IsSuccessStatusCode)
             {
