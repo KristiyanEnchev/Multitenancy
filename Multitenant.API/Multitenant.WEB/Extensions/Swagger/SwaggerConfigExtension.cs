@@ -1,5 +1,6 @@
 ﻿namespace Multitenant.WEB.Extensions.Swagger
 {
+    using Azure.Core;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -132,12 +133,23 @@
                         string protocol = httpReq.Headers["X-Forwarded-Proto"]!;
                         string prefix = httpReq.Headers["X-Forwarded-Prefix"]!;
 
+                        var url = string.Empty;
+
+                        if (string.IsNullOrEmpty(protocol) || string.IsNullOrEmpty(prefix))
+                        {
+                            url = $"{httpReq.Scheme}://{httpReq.Host.Value}{httpReq.PathBase.Value}";
+                        }
+                        else
+                        {
+                            url = $"{protocol}://{httpReq.Host.Value}/{prefix}";
+                        }
+
                         swaggerDoc.Servers.Clear();
                         swaggerDoc.Servers = new List<OpenApiServer>
                         {
                             new OpenApiServer
                             {
-                                Url = $"{protocol}://{httpReq.Host.Value}/{prefix}"
+                                Url = url
                             }
                         };
                     });

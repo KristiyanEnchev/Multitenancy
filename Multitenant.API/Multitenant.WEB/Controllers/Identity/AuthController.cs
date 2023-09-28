@@ -10,6 +10,7 @@
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Application.Identity.UserIdentity;
     using Multitenant.Application.Identity.UserIdentity.Password;
+    using Multitenant.Shared.ClaimsPrincipal;
 
     public class AuthController : VersionNeutralApiController
     {
@@ -85,11 +86,30 @@
         }
 
         [HttpPost("reset-password")]
+        //// need to check why this need to be authenticated nad how it will be authenticated then
+        [AllowAnonymous]
+        [TenantIdHeader]
         [SwaggerOperation("Reset a user's password.", "")]
         //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
         public async Task<string> ResetPasswordAsync(ResetPasswordRequest request)
         {
             return await _authService.ResetPasswordAsync(request);
+        }
+
+        [Authorize]
+        [TenantIdHeader]
+        [HttpPut("change-password")]
+        [SwaggerOperation("Change password of currently logged in user.", "")]
+        //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+        public async Task<ActionResult> ChangePasswordAsync(ChangePasswordRequest model)
+        {
+            if (User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            await _authService.ChangePasswordAsync(model, userId);
+            return Ok();
         }
 
         private string GetOriginFromRequest()

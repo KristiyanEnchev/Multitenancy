@@ -53,6 +53,8 @@
 
         public async Task<string> ResetPasswordAsync(ResetPasswordRequest request)
         {
+            EnsureValidTenant();
+
             var user = await _userManager.FindByEmailAsync(request.Email?.Normalize()!);
 
             // Don't reveal that the user does not exist
