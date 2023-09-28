@@ -16,24 +16,22 @@ namespace Multitenant.Infrastructure.Services.Mailing
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> SendRegistrationEmail(EmailRequest request)
-        //public async Task<bool> SendRegistrationEmail(string email, string username, string uri)
+        public async Task<HttpResponseMessage> SendRegistrationEmail(EmailRequest request)
         {
-            //var some = new
-            //{
-            //    Email = email,
-            //    Username = username,
-            //    Url = uri
-            //};
-
             var content = ConverContent(request);
-            var response = await httpClient.PostAsync("https://localhost:44335/api/Email/smtp-register", content);
 
-            if (!response.IsSuccessStatusCode)
-            {
-            }
+            var response = await httpClient.PostAsync("https://localhost/mailing/api/Email/smtp-register", content);
 
-            return response.IsSuccessStatusCode;
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> SendPasswordResetnEmail(EmailRequest request)
+        {
+            var content = ConverContent(request);
+
+            var response = await httpClient.PostAsync("https://localhost/mailing/api/Email/smtp-resset-password", content);
+
+            return response;
         }
 
         private static StringContent ConverContent(object model)

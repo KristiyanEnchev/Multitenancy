@@ -5,7 +5,7 @@ namespace Multitenant.Application.Interfaces.Mailing
 
     public interface IEmailService : IScopedService
     {
-        Task<bool> SendRegistrationEmail(EmailRequest req);
-        //Task<bool> SendRegistrationEmail(string email, string username, string uri);
+        Task<HttpResponseMessage> SendRegistrationEmail(EmailRequest req);
+        Task<HttpResponseMessage> SendPasswordResetnEmail(EmailRequest req);
     }
 }

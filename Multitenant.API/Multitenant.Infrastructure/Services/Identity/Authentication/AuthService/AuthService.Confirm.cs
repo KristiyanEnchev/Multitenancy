@@ -1,4 +1,4 @@
-namespace Multitenant.Auth.UserServices
+namespace Multitenant.Infrastructure.Services.Identity.Authentication.AuthService
 {
     using System.Text;
 
@@ -10,19 +10,26 @@ namespace Multitenant.Auth.UserServices
     using Multitenant.Domain.Entities.Identity;
     using Multitenant.Shared.Constants.Multitenancy;
 
-    public partial class UserService
+    public partial class AuthService
     {
         public async Task<string> GetEmailVerificationUriAsync(User user, string origin)
         {
             EnsureValidTenant();
 
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            const string route = "api/users/confirm-email/";
+
+            const string route = "api/auth/confirm-email/";
+
             var endpointUri = new Uri(string.Concat($"{origin}/", route));
+
             string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id);
+
             verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant.Id!);
+
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant?.Id!);
+
             return verificationUri;
         }
 
@@ -40,7 +47,7 @@ namespace Multitenant.Auth.UserServices
             var result = await _userManager.ConfirmEmailAsync(user, code);
 
             return result.Succeeded
-                ? string.Format($"Account Confirmed for E-Mail {user.Email}. You can now use the /api/tokens endpoint to generate JWT.")
+                ? string.Format($"Account Confirmed for E-Mail {user.Email}. You can now login.")
                 : throw new InternalServerException(string.Format($"An error occurred while confirming {user.Email}"));
         }
 
@@ -62,5 +69,4 @@ namespace Multitenant.Auth.UserServices
                 : throw new InternalServerException(string.Format($"An error occurred while confirming {user.PhoneNumber}"));
         }
     }
-
 }

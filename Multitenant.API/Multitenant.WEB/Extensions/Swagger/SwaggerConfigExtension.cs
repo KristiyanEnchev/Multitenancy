@@ -125,10 +125,27 @@
 
             if (settings.Enable)
             {
-                app.UseSwagger();
+                app.UseSwagger(config =>
+                {
+                    config.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                    {
+                        string protocol = httpReq.Headers["X-Forwarded-Proto"]!;
+                        string prefix = httpReq.Headers["X-Forwarded-Prefix"]!;
+
+                        swaggerDoc.Servers.Clear();
+                        swaggerDoc.Servers = new List<OpenApiServer>
+                        {
+                            new OpenApiServer
+                            {
+                                Url = $"{protocol}://{httpReq.Host.Value}/{prefix}"
+                            }
+                        };
+                    });
+                });
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint($"/swagger/{settings.Version}/swagger.json", $"{settings.Title}");
+                    options.RoutePrefix = "swagger";
+                    options.SwaggerEndpoint("/swagger/1.0.0/swagger.json", $"{settings.Title}");
 
                     // Customize Swagger UI options
                     //options.DefaultModelsExpandDepth(-1);
