@@ -1,0 +1,9 @@
+{
+  "MailingSettings": {
+    "LinkType": "proxy",
+    "DirectLink": "http://127.0.0.1:5181",
+    "ProxyLink": "https://127.0.0.1/mailing",
+    "RegistrationEmail": "/api/Email/smtp-register",
+    "ResetPasswordEmail": "/api/Email/smtp-resset-password"
+  }
+}

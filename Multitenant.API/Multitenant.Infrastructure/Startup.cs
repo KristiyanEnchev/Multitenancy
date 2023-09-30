@@ -21,6 +21,7 @@
     using Multitenant.Infrastructure.Extensions.Tenant;
     using Multitenant.Infrastructure.Services.Identity;
     using Multitenant.Infrastructure.Services.Cache;
+    using Multitenant.Models.Mailing;
 
     public static class Startup
     {
@@ -28,6 +29,8 @@
         {
             var applicationAssembly = typeof(Multitenant.Application.Startup).GetTypeInfo().Assembly;
             services.AddApplication();
+
+            services.Configure<MailingSettings>(config.GetSection(nameof(MailingSettings)));
 
             services.AddHttpClient();
             MapsterSettings.Configure();
@@ -43,8 +46,6 @@
                 //.AddIdentity()
                 .AddAuth(config)
                 .AddServices();
-
-
         }
 
         public static async Task InitializeDatabasesAsync(this IServiceProvider services, CancellationToken cancellationToken = default)

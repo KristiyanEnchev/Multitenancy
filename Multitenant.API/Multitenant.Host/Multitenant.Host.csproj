@@ -19,7 +19,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="Configurations\swagger.json" />
+		<None Include="Configurations\swagger.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -33,7 +35,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Logs\" />
+		<Folder Include="Logs\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="Configurations\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 </Project>

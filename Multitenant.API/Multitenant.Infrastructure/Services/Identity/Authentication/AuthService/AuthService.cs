@@ -91,7 +91,20 @@
 
             var req = CreateRegistrationEmailRequest(user, emailVerificationUri);
 
-            var response = await emailService.SendRegistrationEmail(req);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await emailService.SendRegistrationEmail(req);
+
+            }
+            catch (Exception ex)
+            {
+                await _userManager.DeleteAsync(user);
+
+                throw;
+            }
+
 
             if (!response.IsSuccessStatusCode)
             {
@@ -99,6 +112,8 @@
 
                 string errorContent = await response.Content.ReadAsStringAsync();
                 string errorMessage = $"HTTP Error {(int)response.StatusCode}: {response.ReasonPhrase}\n{errorContent}";
+
+                await _userManager.DeleteAsync(user);
 
                 throw new CustomException(error, new List<string> { errorMessage }, response.StatusCode);
             }

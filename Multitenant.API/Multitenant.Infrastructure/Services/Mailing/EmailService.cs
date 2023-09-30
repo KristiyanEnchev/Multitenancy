@@ -1,26 +1,29 @@
-﻿using Multitenant.Application.Interfaces.Mailing;
-using Multitenant.Application.Persistence.Auditing;
-using Multitenant.Domain.Entities.Identity;
-using Multitenant.Models.Mailing;
-using Newtonsoft.Json;
-using System.Security.Policy;
-using System.Text;
-
-namespace Multitenant.Infrastructure.Services.Mailing
+﻿namespace Multitenant.Infrastructure.Services.Mailing
 {
+    using System.Text;
+
+    using Newtonsoft.Json;
+
+    using Multitenant.Models.Mailing;
+    using Multitenant.Application.Interfaces.Mailing;
+    using Microsoft.Extensions.Options;
+
     public class EmailService : IEmailService
     {
         private readonly HttpClient httpClient;
-        public EmailService(HttpClient httpClient)
+        private readonly IOptions<MailingSettings> _mailingSettings;
+
+        public EmailService(HttpClient httpClient, IOptions<MailingSettings> mailingSettings)
         {
             this.httpClient = httpClient;
+            _mailingSettings = mailingSettings;
         }
 
         public async Task<HttpResponseMessage> SendRegistrationEmail(EmailRequest request)
         {
             var content = ConverContent(request);
 
-            var response = await httpClient.PostAsync("https://localhost/mailing/api/Email/smtp-register", content);
+            var response = await httpClient.PostAsync(_mailingSettings.Value.RegistrationUrl, content);
 
             return response;
         }
@@ -29,7 +32,7 @@ namespace Multitenant.Infrastructure.Services.Mailing
         {
             var content = ConverContent(request);
 
-            var response = await httpClient.PostAsync("https://localhost/mailing/api/Email/smtp-resset-password", content);
+            var response = await httpClient.PostAsync(_mailingSettings.Value.ResetPasswordUrl, content);
 
             return response;
         }

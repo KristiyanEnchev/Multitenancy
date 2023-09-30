@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: multitenant.api
+    image: kristiyanenchev/multitenant.api-server:1.0
+    build:
+      context: ./Multitenant.API
+      dockerfile: ./Multitenant.Host/Dockerfile
+    ports:
+      - '5013:80'
+    restart: on-failure
+    volumes:
+      - server:/root/.aspnet/DataProtection-Keys
+    networks:
+      - my_common_network
+
+networks:
+  my_common_network:
+    external: true
+
+volumes:
+  server:

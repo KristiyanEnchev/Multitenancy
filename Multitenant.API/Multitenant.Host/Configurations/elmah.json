@@ -1,8 +1,11 @@
 {
   "ElmahSettings": {
     "activate": true,
-    "elmahDb": "Server=.;Database=Multi_Elmah;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
-    "ConnectionString": "Server=.;Database=Multi_Elmah;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
+    "elmahDb": "Server=172.16.1.195,1433;Database=Multi_Elmah;User Id=APIADMIN;Password=123456;TrustServerCertificate=true;MultipleActiveResultSets=true;Encrypt=false",
+    "ConnectionString": "Server=172.16.1.195,1433;Database=Multi_Elmah;User Id=APIADMIN;Password=123456;TrustServerCertificate=true;MultipleActiveResultSets=true;Encrypt=false",
+
+    //"elmahDb": "Server=.;Database=Multi_Elmah;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
+    //"ConnectionString": "Server=.;Database=Multi_Elmah;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false",
     "elmahTable": "ELMAH_Error"
   }
 }
