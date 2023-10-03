@@ -7,8 +7,12 @@ services:
     build:
       context: ./Multitenant.API
       dockerfile: ./Multitenant.Host/Dockerfile
+    environment:
+      - 'ASPNETCORE_Kestrel__Certificates__Default__Path=ssl/ssl_certificate.crt'
+      - 'ASPNETCORE_Kestrel__Certificates__Default__KeyPath=ssl/private_key_unencrypted.pem'
     ports:
       - '5013:80'
+      # - '5014:443'
     restart: on-failure
     volumes:
       - server:/root/.aspnet/DataProtection-Keys

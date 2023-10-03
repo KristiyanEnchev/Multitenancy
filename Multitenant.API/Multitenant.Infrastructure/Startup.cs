@@ -32,7 +32,14 @@
 
             services.Configure<MailingSettings>(config.GetSection(nameof(MailingSettings)));
 
-            services.AddHttpClient();
+            //services.AddHttpClient();
+            services.AddHttpClient("HttpClientName", c => { }).ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
             MapsterSettings.Configure();
             return services
                 .AddVersioning()
@@ -64,5 +71,26 @@
                 .UseCorsPolicy()
                 .UseMultiTenancy()
                 .UseElmah();
+
+
+        //         private void ConfigureHttpClientHandler(HttpClient httpClient)
+        // {
+        //     var httpClientHandler = httpClient.GetOrCreateHttpClientHandler();
+
+        //     // Specify the thumbprint of the trusted certificate
+        //     var thumbprint = "YOUR_CERTIFICATE_THUMBPRINT_HERE";
+
+        //     httpClientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+        //     {
+        //         // Check if the certificate thumbprint matches the expected thumbprint
+        //         if (cert is X509Certificate2 certificate && certificate.Thumbprint == thumbprint)
+        //         {
+        //             return true; // The certificate is trusted
+        //         }
+
+        //         // Certificate validation failed
+        //         return false;
+        //     };
+        // }
     }
 }
