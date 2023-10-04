@@ -11,6 +11,11 @@
     using Multitenant.Domain.Entities.Identity;
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.Application.Identity.UserIdentity;
+    using Multitenant.Infrastructure.Services.Mailing;
+    using Microsoft.AspNetCore.WebUtilities;
+    using Multitenant.Shared.Constants.Multitenancy;
+    using Multitenant.Shared.Persistance;
+    using System.Text;
 
     public partial class UserService
     {
@@ -106,6 +111,15 @@
 
         public async Task<string> CreateAsync(CreateUserRequest request, string origin)
         {
+            var checkForEmailExist = await _userManager.FindByEmailAsync(request.Email);
+
+            if (checkForEmailExist != null)
+            {
+                string error = "Email already exists!";
+
+                throw new ConflictException(error);
+            }
+
             var user = new User
             {
                 Email = request.Email,
@@ -116,34 +130,64 @@
                 IsActive = true
             };
 
+            var roleExist = await _roleManager.RoleExistsAsync(Roles.Basic);
+
+            if (!roleExist)
+            {
+                string error = $"The Role:{Roles.Basic} does not exist";
+
+                throw new NotFoundException(error);
+            }
+
             var result = await _userManager.CreateAsync(user, request.Password);
-            var errors = result.Errors.Select(e => e.Description);
 
             if (!result.Succeeded)
             {
+                var errors = result.Errors.Select(e => e.Description);
+
                 throw new InternalServerException("Validation Errors Occurred.", errors.ToList());
             }
 
             await _userManager.AddToRoleAsync(user, Roles.Basic);
 
-            var messages = new List<string> { string.Format(string.Format($"User {0} Registered.", user.UserName)) };
+            var messages = new List<string> { string.Format("User {0} Registered.", user.UserName) };
 
             if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
             {
-                // send verification email
-                //string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-                //RegisterUserEmailModel eMailModel = new RegisterUserEmailModel()
-                //{
-                //    Email = user.Email,
-                //    UserName = user.UserName,
-                //    Url = emailVerificationUri
-                //};
-                //var mailRequest = new MailRequest(
-                //    new List<string> { user.Email },
-                //    _t["Confirm Registration"],
-                //    _templateService.GenerateEmailTemplate("email-confirmation", eMailModel));
-                //_jobService.Enqueue(() => _mailService.SendAsync(mailRequest, CancellationToken.None));
+
+                string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
+
+                var req = CreateRegistrationEmailRequest(user, emailVerificationUri);
+
+                HttpResponseMessage response;
+
+                try
+                {
+                    response = await _emailService.SendRegistrationEmail(req);
+
+                }
+                catch (Exception ex)
+                {
+                    await _userManager.DeleteAsync(user);
+
+                    throw;
+                }
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = $"Somthing Went Wrong When Sending The Email To: {user.Email}";
+
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    string errorMessage = $"HTTP Error {(int)response.StatusCode}: {response.ReasonPhrase}\n{errorContent}";
+
+                    await _userManager.DeleteAsync(user);
+
+                    throw new CustomException(error, new List<string> { errorMessage }, response.StatusCode);
+                }
+
                 messages.Add($"Please check {user.Email} to verify your account!");
+
             }
 
             await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
@@ -189,6 +233,28 @@
             {
                 throw new InternalServerException("Update profile failed", errors.ToList());
             }
+        }
+
+
+        public async Task<string> GetEmailVerificationUriAsync(User user, string origin)
+        {
+            EnsureValidTenant();
+
+            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            string route = _mailingSettings.Value.ConfirmEmailPath!;
+
+            var endpointUri = new Uri(string.Concat($"{origin}/", route));
+
+            string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id);
+
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
+
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant?.Id!);
+
+            return verificationUri;
         }
     }
 }

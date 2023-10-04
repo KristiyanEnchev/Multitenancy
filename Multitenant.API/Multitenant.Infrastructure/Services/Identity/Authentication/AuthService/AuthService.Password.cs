@@ -11,7 +11,7 @@
     {
         public async Task<string> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
         {
-            EnsureValidTenant();
+            _util.EnsureValidTenant();
 
             var user = await _userManager.FindByEmailAsync(request.Email.Normalize());
             if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
@@ -30,7 +30,7 @@
 
             var messages = new List<string> { string.Format("User: {0}, Password Reset Mail has been sent to your Email: {1}", user.UserName, user.Email) };
 
-            var eMailModel = CreateRessetPasswordEmailRequest(user, code, endpointUri.ToString(), passwordResetUrl);
+            var eMailModel = _util.CreateRessetPasswordEmailRequest(user, code, endpointUri.ToString(), passwordResetUrl);
 
             var response = await emailService.SendPasswordResetnEmail(eMailModel);
 
@@ -53,7 +53,7 @@
 
         public async Task<string> ResetPasswordAsync(ResetPasswordRequest request)
         {
-            EnsureValidTenant();
+            _util.EnsureValidTenant();
 
             var user = await _userManager.FindByEmailAsync(request.Email?.Normalize()!);
 
@@ -86,46 +86,6 @@
             }
 
             return "Password Reset Successful!";
-        }
-
-        private static EmailRequest CreateRessetPasswordEmailRequest(User user, string code, string endpointUri, string passwordResetUrl)
-        {
-            var request = new EmailRequest
-            {
-                From = "noreplay@mail.com",
-                To = user.Email,
-                TemplateName = TemplateNames.passwordReset.ToString(),
-                TemplateDataList = new List<TemplateData>
-                {
-                    new TemplateData
-                    {
-                        Key = "UserName",
-                        Value = user.UserName
-                    },
-                    new TemplateData
-                    {
-                        Key = "Email",
-                        Value = user.Email
-                    },
-                    new TemplateData
-                    {
-                        Key = "Code",
-                        Value = code
-                    },
-                    new TemplateData
-                    {
-                        Key = "EndpointUri",
-                        Value = endpointUri
-                    },
-                    new TemplateData
-                    {
-                        Key = "PasswordResetUrl",
-                        Value = passwordResetUrl
-                    }
-                }
-            };
-
-            return request;
         }
     }
 }

@@ -10,5 +10,8 @@
         public string? BaseUrl => LinkType == "direct" ? DirectLink : ProxyLink;
         public string RegistrationUrl => $"{BaseUrl}{RegistrationEmail}";
         public string ResetPasswordUrl => $"{BaseUrl}{RegistrationEmail}";
+
+        public string? ConfirmEmailPath { get; set; }
+        public string? DefaultFromEmail { get; set; }
     }
 }

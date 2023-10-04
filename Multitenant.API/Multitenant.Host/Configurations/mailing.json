@@ -5,6 +5,9 @@
     "ProxyLink": "https://127.0.0.1/mailing",
     //"ProxyLink": "https://172.16.1.195/mailing",
     "RegistrationEmail": "/api/Email/smtp-register",
-    "ResetPasswordEmail": "/api/Email/smtp-resset-password"
+    "ResetPasswordEmail": "/api/Email/smtp-resset-password",
+
+    "ConfirmEmailPath": "/api/auth/confirm-email/",
+    "DefaultFromEmail": "noreplay@mail.com"
   }
 }

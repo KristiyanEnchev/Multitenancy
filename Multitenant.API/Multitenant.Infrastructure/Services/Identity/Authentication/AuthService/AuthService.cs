@@ -12,6 +12,8 @@
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.Application.Interfaces.Mailing;
     using Multitenant.Models.Mailing;
+    using Microsoft.Extensions.Options;
+    using Multitenant.Infrastructure.Services.Identity.Authentication.Util;
 
     public partial class AuthService : IAuthService
     {
@@ -22,6 +24,8 @@
         private readonly MultiTenantInfo? _currentTenant;
         private readonly ITokenService? tokenService;
         private readonly IEmailService emailService;
+        IOptions<MailingSettings> _mailingSettings;
+        private readonly IUtil _util;
 
         public AuthService(
             UserManager<User> userManager,
@@ -30,7 +34,9 @@
             MultiTenantInfo? currentTenant,
             ITokenService? tokenService,
             RoleManager<UserRole> roleManager,
-            IEmailService emailService)
+            IEmailService emailService,
+            IOptions<MailingSettings> mailingSettings,
+            IUtil util)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +45,8 @@
             _currentTenant = currentTenant;
             this.tokenService = tokenService;
             this.emailService = emailService;
+            _mailingSettings = mailingSettings;
+            _util = util;
         }
 
         public async Task<string> RegisterAsync(CreateUserRequest request, string origin)
@@ -87,9 +95,9 @@
             //if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
             //{
 
-            string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
+            string emailVerificationUri = await _util.GetEmailVerificationUriAsync(user, origin);
 
-            var req = CreateRegistrationEmailRequest(user, emailVerificationUri);
+            var req = _util.CreateRegistrationEmailRequest(user, emailVerificationUri);
 
             HttpResponseMessage response;
 
@@ -198,36 +206,6 @@
             {
                 throw new UnauthorizedException("Invalid Tenant.");
             }
-        }
-
-        private static EmailRequest CreateRegistrationEmailRequest(User user, string emailVerificationUri)
-        {
-            var request = new EmailRequest
-            {
-                From = "noreplay@mail.com",
-                To = user.Email,
-                TemplateName = TemplateNames.email_confirmation.ToString().Replace("_", "-"),
-                TemplateDataList = new List<TemplateData>
-                {
-                    new TemplateData
-                    {
-                        Key = "UserName",
-                        Value = user.UserName
-                    },
-                    new TemplateData
-                    {
-                        Key = "Email",
-                        Value = user.Email
-                    },
-                     new TemplateData
-                    {
-                        Key = "Url",
-                        Value = emailVerificationUri
-                    }
-                }
-            };
-
-            return request;
         }
     }
 }

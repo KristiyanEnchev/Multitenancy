@@ -23,6 +23,8 @@
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Infrastructure.Services.Tenant.Context;
     using Multitenant.Application.Identity.UserIdentity;
+    using Multitenant.Application.Interfaces.Mailing;
+    using Multitenant.Models.Mailing;
 
     public partial class UserService : IUserService
     {
@@ -35,6 +37,8 @@
         private readonly ICacheService _cache;
         private readonly ICacheKeyService _cacheKeys;
         private readonly ITenantInfo _currentTenant;
+        private readonly IEmailService _emailService;
+        private readonly IOptions<MailingSettings> _mailingSettings;
 
         public UserService(
             SignInManager<User> signInManager,
@@ -45,7 +49,9 @@
             ICacheService cache,
             ICacheKeyService cacheKeys,
             ITenantInfo currentTenant,
-            IOptions<SecuritySettings> securitySettings)
+            IOptions<SecuritySettings> securitySettings,
+            IEmailService emailService,
+            IOptions<MailingSettings> mailingSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -56,6 +62,8 @@
             _cacheKeys = cacheKeys;
             _currentTenant = currentTenant;
             _securitySettings = securitySettings.Value;
+            _emailService = emailService;
+            _mailingSettings = mailingSettings;
         }
 
         public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)

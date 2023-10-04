@@ -34,12 +34,5 @@ namespace Multitenant.Application.Interfaces.Identity
         Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal);
         Task<string> CreateAsync(CreateUserRequest request, string origin);
         Task UpdateAsync(UpdateUserRequest request, string userId);
-
-        //Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken);
-        //Task<string> ConfirmPhoneNumberAsync(string userId, string code);
-
-        //Task<string> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
-        //Task<string> ResetPasswordAsync(ResetPasswordRequest request);
-        //Task ChangePasswordAsync(ChangePasswordRequest request, string userId);
     }
 }

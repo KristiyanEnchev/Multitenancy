@@ -2,7 +2,6 @@
 {
     using System.Text;
     using System.Security.Claims;
-    using System.Security.Cryptography;
     using System.IdentityModel.Tokens.Jwt;
 
     using Microsoft.AspNetCore.Identity;

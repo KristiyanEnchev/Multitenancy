@@ -10,8 +10,6 @@
 
         Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string ipAddress);
 
-
-
         Task<TokenResponse> GenerateTokensAndUpdateUser(User user, string ipAddress);
     }
 }

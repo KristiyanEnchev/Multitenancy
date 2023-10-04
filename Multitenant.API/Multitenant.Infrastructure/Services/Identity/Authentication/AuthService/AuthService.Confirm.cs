@@ -5,34 +5,10 @@ namespace Multitenant.Infrastructure.Services.Identity.Authentication.AuthServic
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.WebUtilities;
 
-    using Multitenant.Shared.Persistance;
     using Multitenant.Application.Exceptions;
-    using Multitenant.Domain.Entities.Identity;
-    using Multitenant.Shared.Constants.Multitenancy;
 
     public partial class AuthService
     {
-        public async Task<string> GetEmailVerificationUriAsync(User user, string origin)
-        {
-            EnsureValidTenant();
-
-            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-            const string route = "api/auth/confirm-email/";
-
-            var endpointUri = new Uri(string.Concat($"{origin}/", route));
-
-            string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id);
-
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
-
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant?.Id!);
-
-            return verificationUri;
-        }
-
         public async Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken)
         {
             EnsureValidTenant();
