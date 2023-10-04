@@ -2,11 +2,12 @@
 {
     using System.Text;
 
+    using Microsoft.Extensions.Options;
+
     using Newtonsoft.Json;
 
     using Multitenant.Models.Mailing;
     using Multitenant.Application.Interfaces.Mailing;
-    using Microsoft.Extensions.Options;
 
     public class EmailService : IEmailService
     {
@@ -16,7 +17,7 @@
         public EmailService(HttpClient httpClient, IOptions<MailingSettings> mailingSettings)
         {
             this.httpClient = httpClient;
-            _mailingSettings = mailingSettings;
+            this._mailingSettings = mailingSettings;
         }
 
         public async Task<HttpResponseMessage> SendRegistrationEmail(EmailRequest request)

@@ -7,7 +7,7 @@
     "RegistrationEmail": "/api/Email/smtp-register",
     "ResetPasswordEmail": "/api/Email/smtp-resset-password",
 
-    "ConfirmEmailPath": "/api/auth/confirm-email/",
+    "ConfirmEmailPath": "api/auth/confirm-email/",
     "DefaultFromEmail": "noreplay@mail.com"
   }
 }

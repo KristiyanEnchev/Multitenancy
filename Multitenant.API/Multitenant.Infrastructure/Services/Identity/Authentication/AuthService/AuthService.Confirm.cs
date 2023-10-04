@@ -11,7 +11,7 @@ namespace Multitenant.Infrastructure.Services.Identity.Authentication.AuthServic
     {
         public async Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken)
         {
-            EnsureValidTenant();
+            _util.EnsureValidTenant();
 
             var user = await _userManager.Users
                 .Where(u => u.Id == userId && !u.EmailConfirmed)
@@ -29,7 +29,7 @@ namespace Multitenant.Infrastructure.Services.Identity.Authentication.AuthServic
 
         public async Task<string> ConfirmPhoneNumberAsync(string userId, string code)
         {
-            EnsureValidTenant();
+            _util.EnsureValidTenant();
 
             var user = await _userManager.FindByIdAsync(userId);
 

@@ -1,17 +1,14 @@
-﻿namespace Multitenant.WEB.Controllers.User
+﻿namespace Multitenant.WEB.Controllers.Identity
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
+
+    using Swashbuckle.AspNetCore.Annotations;
 
     using Multitenant.Models.Identity;
-    using Multitenant.WEB.Attributes;
     using Multitenant.WEB.Extensions.Permissions;
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Application.Identity.UserIdentity;
-    using Multitenant.Application.Identity.UserIdentity.Password;
     using Multitenant.Shared.ClaimsPrincipal;
-    using Swashbuckle.AspNetCore.Annotations;
-    using System.ComponentModel.DataAnnotations;
 
     public class UsersController : VersionNeutralApiController
     {
@@ -46,17 +43,19 @@
             return _userService.CreateAsync(request, GetOriginFromRequest());
         }
 
-        [HttpPut(nameof(Update) + "/{id}")]
-        public async Task<ActionResult<BaseResponse>> Update([Required] string id, UpdateUserModel model)
+        [HttpPut("{id}")]
+        [MustHavePermission(Action.Create, Resource.Users)]
+        [SwaggerOperation("Creates a new user.", "")]
+        public async Task Update(UpdateUserRequest request, string userId)
         {
-            return await userService.Update(id, model);
+            await _userService.UpdateAsync(request, userId);
         }
 
-        [HttpDelete(nameof(Delete) + "/{id}")]
-        public async Task<ActionResult> Delete(string id)
-        {
-            return await userService.Delete(id).ToActionResult();
-        }
+        //[HttpDelete(nameof(Delete) + "/{id}")]
+        //public async Task<ActionResult> Delete(string id)
+        //{
+        //    return await userService.Delete(id).ToActionResult();
+        //}
 
         [HttpGet("{id}/roles")]
         [MustHavePermission(Action.View, Resource.UserRoles)]

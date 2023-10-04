@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Identity;
 
     using Multitenant.Shared;
+    using Multitenant.Models.Security;
     using Multitenant.Shared.Constants.Multitenancy;
     using Multitenant.Application.Exceptions;
     using Multitenant.Application.Identity.Token;
@@ -11,42 +12,43 @@
     using Multitenant.Application.Identity.UserIdentity;
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.Application.Interfaces.Mailing;
-    using Multitenant.Models.Mailing;
-    using Microsoft.Extensions.Options;
     using Multitenant.Infrastructure.Services.Identity.Authentication.Util;
+    using Multitenant.Application.Events;
+    using Multitenant.Domain.Events;
+    using Microsoft.Extensions.Options;
 
     public partial class AuthService : IAuthService
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<UserRole> _roleManager;
-        //private readonly SecuritySettings _securitySettings;
+        private readonly SecuritySettings _securitySettings;
         private readonly MultiTenantInfo? _currentTenant;
         private readonly ITokenService? tokenService;
         private readonly IEmailService emailService;
-        IOptions<MailingSettings> _mailingSettings;
+        private readonly IEventPublisher _events;
         private readonly IUtil _util;
 
         public AuthService(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            //SecuritySettings securitySettings,
+            IOptions<SecuritySettings> securitySettings,
             MultiTenantInfo? currentTenant,
-            ITokenService? tokenService,
             RoleManager<UserRole> roleManager,
+            ITokenService? tokenService,
             IEmailService emailService,
-            IOptions<MailingSettings> mailingSettings,
-            IUtil util)
+            IUtil util,
+            IEventPublisher events)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            //_securitySettings = securitySettings;
+            _securitySettings = securitySettings.Value;
             _currentTenant = currentTenant;
             this.tokenService = tokenService;
             this.emailService = emailService;
-            _mailingSettings = mailingSettings;
             _util = util;
+            _events = events;
         }
 
         public async Task<string> RegisterAsync(CreateUserRequest request, string origin)
@@ -92,45 +94,42 @@
 
             var messages = new List<string> { string.Format("User {0} Registered.", user.UserName) };
 
-            //if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
-            //{
-
-            string emailVerificationUri = await _util.GetEmailVerificationUriAsync(user, origin);
-
-            var req = _util.CreateRegistrationEmailRequest(user, emailVerificationUri);
-
-            HttpResponseMessage response;
-
-            try
+            if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
             {
-                response = await emailService.SendRegistrationEmail(req);
+                string emailVerificationUri = await _util.GetEmailVerificationUriAsync(user, origin);
 
+                var req = _util.CreateRegistrationEmailRequest(user, emailVerificationUri);
+
+                HttpResponseMessage response;
+
+                try
+                {
+                    response = await emailService.SendRegistrationEmail(req);
+
+                }
+                catch (Exception ex)
+                {
+                    await _userManager.DeleteAsync(user);
+
+                    throw;
+                }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = $"Somthing Went Wrong When Sending The Email To: {user.Email}";
+
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    string errorMessage = $"HTTP Error {(int)response.StatusCode}: {response.ReasonPhrase}\n{errorContent}";
+
+                    await _userManager.DeleteAsync(user);
+
+                    throw new CustomException(error, new List<string> { errorMessage }, response.StatusCode);
+                }
+
+                messages.Add($"Please check {user.Email} to verify your account!");
             }
-            catch (Exception ex)
-            {
-                await _userManager.DeleteAsync(user);
 
-                throw;
-            }
-
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = $"Somthing Went Wrong When Sending The Email To: {user.Email}";
-
-                string errorContent = await response.Content.ReadAsStringAsync();
-                string errorMessage = $"HTTP Error {(int)response.StatusCode}: {response.ReasonPhrase}\n{errorContent}";
-
-                await _userManager.DeleteAsync(user);
-
-                throw new CustomException(error, new List<string> { errorMessage }, response.StatusCode);
-            }
-
-            messages.Add($"Please check {user.Email} to verify your account!");
-
-            //}
-
-            //await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
+            await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
 
             return string.Join(Environment.NewLine, messages);
         }
@@ -198,14 +197,6 @@
             await _signInManager.SignOutAsync();
 
             return true;
-        }
-
-        private void EnsureValidTenant()
-        {
-            if (string.IsNullOrWhiteSpace(_currentTenant?.Id))
-            {
-                throw new UnauthorizedException("Invalid Tenant.");
-            }
         }
     }
 }

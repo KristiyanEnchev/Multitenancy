@@ -2,20 +2,15 @@
 {
     using System.Security.Claims;
 
+    using Microsoft.Identity.Web;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Identity.Web;
 
     using Multitenant.Domain.Events;
     using Multitenant.Application.Exceptions;
     using Multitenant.Domain.Entities.Identity;
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.Application.Identity.UserIdentity;
-    using Multitenant.Infrastructure.Services.Mailing;
-    using Microsoft.AspNetCore.WebUtilities;
-    using Multitenant.Shared.Constants.Multitenancy;
-    using Multitenant.Shared.Persistance;
-    using System.Text;
 
     public partial class UserService
     {
@@ -154,15 +149,15 @@
 
             if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
             {
+                string emailVerificationUri = await _Util.GetEmailVerificationUriAsync(user, origin);
 
-                string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-
-                var req = CreateRegistrationEmailRequest(user, emailVerificationUri);
+                var req = _Util.CreateRegistrationEmailRequest(user, emailVerificationUri);
 
                 HttpResponseMessage response;
 
                 try
                 {
+                    //////////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//////////////////////
                     response = await _emailService.SendRegistrationEmail(req);
 
                 }
@@ -172,7 +167,6 @@
 
                     throw;
                 }
-
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -233,28 +227,6 @@
             {
                 throw new InternalServerException("Update profile failed", errors.ToList());
             }
-        }
-
-
-        public async Task<string> GetEmailVerificationUriAsync(User user, string origin)
-        {
-            EnsureValidTenant();
-
-            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-            string route = _mailingSettings.Value.ConfirmEmailPath!;
-
-            var endpointUri = new Uri(string.Concat($"{origin}/", route));
-
-            string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id);
-
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
-
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant?.Id!);
-
-            return verificationUri;
         }
     }
 }

@@ -2,9 +2,7 @@
 {
     using Microsoft.AspNetCore.WebUtilities;
 
-    using Multitenant.Models.Mailing;
     using Multitenant.Application.Exceptions;
-    using Multitenant.Domain.Entities.Identity;
     using Multitenant.Application.Identity.UserIdentity.Password;
 
     public partial class AuthService

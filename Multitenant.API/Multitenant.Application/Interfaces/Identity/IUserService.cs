@@ -6,7 +6,6 @@ namespace Multitenant.Application.Interfaces.Identity
     using Multitenant.Application.Response;
     using Multitenant.Application.Interfaces.DependencyScope;
     using Multitenant.Application.Identity.UserIdentity;
-    using Multitenant.Application.Identity.UserIdentity.Password;
 
     public interface IUserService : ITransientService
     {

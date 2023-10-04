@@ -20,11 +20,11 @@
     using Multitenant.Application.Exceptions;
     using Multitenant.Application.Specification;
     using Multitenant.Application.Interfaces.Cache;
-    using Multitenant.Application.Interfaces.Identity;
-    using Multitenant.Infrastructure.Services.Tenant.Context;
-    using Multitenant.Application.Identity.UserIdentity;
     using Multitenant.Application.Interfaces.Mailing;
-    using Multitenant.Models.Mailing;
+    using Multitenant.Application.Interfaces.Identity;
+    using Multitenant.Application.Identity.UserIdentity;
+    using Multitenant.Infrastructure.Services.Tenant.Context;
+    using Multitenant.Infrastructure.Services.Identity.Authentication.Util;
 
     public partial class UserService : IUserService
     {
@@ -38,7 +38,7 @@
         private readonly ICacheKeyService _cacheKeys;
         private readonly ITenantInfo _currentTenant;
         private readonly IEmailService _emailService;
-        private readonly IOptions<MailingSettings> _mailingSettings;
+        private readonly IUtil _Util;
 
         public UserService(
             SignInManager<User> signInManager,
@@ -51,7 +51,7 @@
             ITenantInfo currentTenant,
             IOptions<SecuritySettings> securitySettings,
             IEmailService emailService,
-            IOptions<MailingSettings> mailingSettings)
+            IUtil util)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -63,7 +63,7 @@
             _currentTenant = currentTenant;
             _securitySettings = securitySettings.Value;
             _emailService = emailService;
-            _mailingSettings = mailingSettings;
+            _Util = util;
         }
 
         public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
@@ -82,28 +82,20 @@
 
         public async Task<bool> ExistsWithNameAsync(string name)
         {
-            EnsureValidTenant();
+            _Util.EnsureValidTenant();
             return await _userManager.FindByNameAsync(name) is not null;
         }
 
         public async Task<bool> ExistsWithEmailAsync(string email, string? exceptId = null)
         {
-            EnsureValidTenant();
+            _Util.EnsureValidTenant();
             return await _userManager.FindByEmailAsync(email.Normalize()) is User user && user.Id != exceptId;
         }
 
         public async Task<bool> ExistsWithPhoneNumberAsync(string phoneNumber, string? exceptId = null)
         {
-            EnsureValidTenant();
+            _Util.EnsureValidTenant();
             return await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber) is User user && user.Id != exceptId;
-        }
-
-        private void EnsureValidTenant()
-        {
-            if (string.IsNullOrWhiteSpace(_currentTenant?.Id))
-            {
-                throw new UnauthorizedException("Invalid Tenant.");
-            }
         }
 
         public async Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken) =>

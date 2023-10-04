@@ -1,7 +1,7 @@
-﻿using Multitenant.Application.Interfaces.DependencyScope;
-namespace Multitenant.Application.Interfaces.Mailing
+﻿namespace Multitenant.Application.Interfaces.Mailing
 {
     using Multitenant.Models.Mailing;
+    using Multitenant.Application.Interfaces.DependencyScope;
 
     public interface IEmailService : IScopedService
     {

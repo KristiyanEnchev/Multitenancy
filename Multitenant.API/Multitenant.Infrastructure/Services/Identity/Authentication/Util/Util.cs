@@ -13,11 +13,11 @@
     using Multitenant.Application.Exceptions;
     using Multitenant.Shared.Constants.Multitenancy;
 
-    internal class Util
+    internal class Util : IUtil
     {
         private readonly UserManager<User> _userManager;
         private readonly MultiTenantInfo? _currentTenant;
-        IOptions<MailingSettings> _mailingSettings;
+        private readonly IOptions<MailingSettings> _mailingSettings;
 
         public Util(IOptions<MailingSettings> mailingSettings, MultiTenantInfo? currentTenant, UserManager<User> userManager)
         {
