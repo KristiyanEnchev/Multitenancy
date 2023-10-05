@@ -18,7 +18,7 @@ namespace Multitenant.WEB.Extensions.Permissions
 
         public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
         {
-            if (policyName.StartsWith(LocalAppClaims.Permission, StringComparison.OrdinalIgnoreCase))
+            if (policyName.StartsWith(LocalAppClaims.Permission, StringComparison.OrdinalIgnoreCase) || policyName.Equals(Roles.Admin))
             {
                 var policy = new AuthorizationPolicyBuilder();
                 policy.AddRequirements(new PermissionRequirement(policyName));

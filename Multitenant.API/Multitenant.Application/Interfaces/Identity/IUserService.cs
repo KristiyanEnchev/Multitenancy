@@ -26,6 +26,7 @@ namespace Multitenant.Application.Interfaces.Identity
 
         Task<List<string>> GetPermissionsAsync(string userId, CancellationToken cancellationToken);
         Task<bool> HasPermissionAsync(string userId, string permission, CancellationToken cancellationToken = default);
+        Task<bool> IsInRoleAsync(string userId, string roleName);
         Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken);
 
         Task ToggleStatusAsync(ToggleUserStatusRequest request, CancellationToken cancellationToken);

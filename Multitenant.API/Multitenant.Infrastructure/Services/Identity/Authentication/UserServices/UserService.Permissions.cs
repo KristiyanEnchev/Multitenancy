@@ -39,6 +39,12 @@
             return permissions?.Contains(permission) ?? false;
         }
 
+        public async Task<bool> IsInRoleAsync(string userId, string roleName) 
+        {
+            var user = await _userManager.FindByIdAsync(userId) ?? throw new NotFoundException("Current user not found");
+            return await _userManager.IsInRoleAsync(user, roleName);
+        }
+
         public Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken) =>
             _cache.RemoveAsync(_cacheKeys.GetCacheKey(LocalAppClaims.Permission, userId), cancellationToken);
     }

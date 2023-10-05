@@ -19,6 +19,11 @@ namespace Multitenant.WEB.Extensions.Permissions
             {
                 context.Succeed(requirement);
             }
+            else if (context.User?.GetUserId() is { } userId1 &&
+                await _userService.IsInRoleAsync(userId1, requirement.Permission))
+            {
+                context.Succeed(requirement);
+            }
         }
     }
 }

@@ -45,7 +45,7 @@
                 ValidateIssuer = true,
                 ValidateLifetime = true,
                 ValidateAudience = true,
-                //RoleClaimType = ClaimTypes.Role,
+                RoleClaimType = ClaimTypes.Role,
                 ClockSkew = TimeSpan.Zero,
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidAudience = _jwtSettings.Audience
