@@ -24,7 +24,7 @@
         [HttpPost("register")]
         [TenantIdHeader]
         [AllowAnonymous]
-        [SwaggerOperation("SelfRegister a user.", "")]
+        [SwaggerOperation("Register a user.", "")]
         public async Task<string> RegisterAsync(CreateUserRequest request)
         {
             return await _authService.RegisterAsync(request, GetOriginFromRequest());

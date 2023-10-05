@@ -33,8 +33,8 @@
                 return;
             }
 
-            byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
-            //byte[] key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
+            //byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+            byte[] key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
 
             options.RequireHttpsMetadata = false;
             options.SaveToken = true;
@@ -45,7 +45,7 @@
                 ValidateIssuer = true,
                 ValidateLifetime = true,
                 ValidateAudience = true,
-                RoleClaimType = ClaimTypes.Role,
+                //RoleClaimType = ClaimTypes.Role,
                 ClockSkew = TimeSpan.Zero,
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidAudience = _jwtSettings.Audience

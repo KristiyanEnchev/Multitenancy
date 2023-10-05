@@ -17,7 +17,7 @@
         public RolesController(IRoleService roleService) => _roleService = roleService;
 
         [HttpGet]
-        [MustHavePermission(Action.View, Resource.Roles)]
+        //[MustHavePermission(Action.View, Resource.Roles)]
         [SwaggerOperation("Get a list of all roles.", "")]
         public Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken)
         {
@@ -25,7 +25,7 @@
         }
 
         [HttpGet("{id}")]
-        [MustHavePermission(Action.View, Resource.Roles)]
+        //[MustHavePermission(Action.View, Resource.Roles)]
         [SwaggerOperation("Get role details.", "")]
         public Task<RoleDto> GetByIdAsync(string id)
         {

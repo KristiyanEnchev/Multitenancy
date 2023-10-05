@@ -78,7 +78,8 @@
                         ClaimType = LocalAppClaims.Permission,
                         ClaimValue = permission.Name,
                         CreatedOn = DateTime.UtcNow,
-                        CreatedBy = "ApplicationDbSeeder"
+                        CreatedBy = "ApplicationDbSeeder",
+                        Description = permission.Description,
                     });
                     await dbContext.SaveChangesAsync();
                 }

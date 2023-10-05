@@ -4,6 +4,8 @@
 
     public class RoleClaim : IdentityRoleClaim<string>
     {
+        public string? Description { get; set; }
+
         public string? CreatedBy { get; init; }
         public DateTime CreatedOn { get; init; }
     }
