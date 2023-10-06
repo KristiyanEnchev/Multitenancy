@@ -61,6 +61,23 @@
                 ? role.Adapt<RoleDto>()
                 : throw new NotFoundException("Role Not Found");
 
+        public async Task<RoleDto> GetByNameAsync(string name) =>
+            await _roleManager.FindByNameAsync(name) is { } role
+                ? role.Adapt<RoleDto>()
+                : throw new NotFoundException("Role Not Found");
+
+        public async Task<RoleDto> GetByNameWithPermissionsAsync(string roleName, CancellationToken cancellationToken)
+        {
+            var role = await GetByNameAsync(roleName);
+
+            role.Permissions = await _db.RoleClaims
+                .Where(c => c.RoleId == role.Id && c.ClaimType == LocalAppClaims.Permission)
+                .Select(c => c.ClaimValue!)
+                .ToListAsync(cancellationToken);
+
+            return role;
+        }
+
         public async Task<RoleDto> GetByIdWithPermissionsAsync(string roleId, CancellationToken cancellationToken)
         {
             var role = await GetByIdAsync(roleId);

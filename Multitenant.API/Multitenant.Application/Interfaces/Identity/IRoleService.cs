@@ -15,6 +15,7 @@ namespace Multitenant.Application.Interfaces.Identity
         Task<RoleDto> GetByIdAsync(string id);
 
         Task<RoleDto> GetByIdWithPermissionsAsync(string roleId, CancellationToken cancellationToken);
+        Task<RoleDto> GetByNameWithPermissionsAsync(string roleName, CancellationToken cancellationToken);
 
         Task<string> CreateOrUpdateAsync(CreateOrUpdateRoleRequest request);
 
