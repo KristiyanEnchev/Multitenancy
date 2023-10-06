@@ -9,7 +9,6 @@
     using Multitenant.Models.Identity;
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.WEB.Extensions.Permissions;
-    using Microsoft.AspNetCore.Authorization;
 
     public class RolesController : VersionNeutralApiController
     {
