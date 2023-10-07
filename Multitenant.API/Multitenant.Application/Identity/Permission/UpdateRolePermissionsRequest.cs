@@ -1,4 +1,4 @@
-﻿namespace Multitenant.Application.Identity.Role
+﻿namespace Multitenant.Application.Identity.Permission
 {
     using FluentValidation;
 

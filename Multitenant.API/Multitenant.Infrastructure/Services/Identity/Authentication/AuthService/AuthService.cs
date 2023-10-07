@@ -101,7 +101,8 @@
                 var req = _util.CreateRegistrationEmailRequest(user, emailVerificationUri);
 
                 HttpResponseMessage response;
-
+                /// TODO: code down is just during testing if any problem occures on the email sending will delete the user
+                ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 try
                 {
                     response = await emailService.SendRegistrationEmail(req);

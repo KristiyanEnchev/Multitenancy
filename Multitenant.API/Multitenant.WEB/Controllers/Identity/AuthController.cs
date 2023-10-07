@@ -66,8 +66,18 @@
             return await _authService.ConfirmEmailAsync(userId, code, tenant, cancellationToken);
         }
 
+        [HttpGet("resend-email")]
+        [AllowAnonymous]
+        [TenantIdHeader]
+        [SwaggerOperation("Confirm email address for a user.", "")]
+        public async Task<string> ResendEmailAsync([FromQuery] string email)
+        {
+            return await _authService.ResendEmailAsync(email, GetOriginFromRequest());
+        }
+
         [HttpGet("confirm-phone-number")]
         [AllowAnonymous]
+        [TenantIdHeader]
         [SwaggerOperation("Confirm phone number for a user.", "")]
         //[ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Search))]
         public async Task<string> ConfirmPhoneNumberAsync([FromQuery] string userId, [FromQuery] string code)

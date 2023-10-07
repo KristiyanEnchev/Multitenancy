@@ -50,39 +50,11 @@
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidAudience = _jwtSettings.Audience
             };
-            //options.Events = new JwtBearerEvents
-            //{
-            //    OnChallenge = context =>
-            //    {
-            //        context.HandleResponse();
-            //        if (!context.Response.HasStarted)
-            //        {
-            //            throw new UnauthorizedException("Authentication Failed.");
-            //        }
-
-            //        return Task.CompletedTask;
-            //    },
-            //    OnForbidden = _ => throw new ForbiddenException("You are not authorized to access this resource."),
-            //    OnMessageReceived = context =>
-            //    {
-            //        var accessToken = context.Request.Query["access_token"];
-
-            //        if (!string.IsNullOrEmpty(accessToken) &&
-            //            context.HttpContext.Request.Path.StartsWithSegments("/notifications"))
-            //        {
-            //            // Read the token out of the query string
-            //            context.Token = accessToken;
-            //        }
-
-            //        return Task.CompletedTask;
-            //    }
-            //};
-
             options.Events = new JwtBearerEvents()
             {
                 OnAuthenticationFailed = c =>
                 {
-                    if (c.Request.Path.Value == "/api/Auth/LogoutAsync" && !c.Response.HasStarted)
+                    if (c.Request.Path.Value == "/api/auth/logout" && !c.Response.HasStarted)
                     {
                         return Task.CompletedTask;
                     }
@@ -91,8 +63,6 @@
                         c.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                         c.Response.ContentType = "application/json";
                         throw new UnauthorizedException("Authentication Failed.");
-                        //var result = JsonConvert.SerializeObject(BaseResponse.Failure(new List<string> { "The Token is expired." }));
-                        //return c.Response.WriteAsync(result);
                     }
                     else
                     {
@@ -105,8 +75,6 @@
                                 c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                                 c.Response.ContentType = "application/json";
                                 throw new InternalServerException("Authentication Failed.");
-                                //var result = JsonConvert.SerializeObject(BaseResponse.Failure(new List<string> {"An unhandled error has occurred."}));
-                                //return c.Response.WriteAsync(result);
 #endif
                     }
                 },
@@ -118,8 +86,6 @@
                         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         context.Response.ContentType = "application/json";
                         throw new UnauthorizedException("Authentication Failed.");
-                        //var result = JsonConvert.SerializeObject(BaseResponse.Failure(new List<string> { "You are not Authorized.", context.Error }));
-                        //return context.Response.WriteAsync(result);
                     }
 
                     return Task.CompletedTask;
@@ -129,8 +95,6 @@
                     context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                     context.Response.ContentType = "application/json";
                     throw new ForbiddenException("You are not authorized to access this resource.");
-                    //var result = JsonConvert.SerializeObject(BaseResponse.Failure(new List<string> { "You are not authorized to access this resource." }));
-                    //return context.Response.WriteAsync(result);
                 },
                 OnMessageReceived = context =>
                 {

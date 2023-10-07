@@ -13,6 +13,7 @@
         Task<bool> LogoutAsync(string userEmail);
 
         Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken);
+        Task<string> ResendEmailAsync(string email, string origin);
         Task<string> ConfirmPhoneNumberAsync(string userId, string code);
 
         Task<string> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);

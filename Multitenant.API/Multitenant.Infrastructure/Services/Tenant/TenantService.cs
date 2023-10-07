@@ -13,6 +13,7 @@
     using Multitenant.Shared;
     using Multitenant.Models.Persistence;
     using Multitenant.Application.Multitenancy;
+    using Azure.Core;
 
     public class TenantService : ITenantService
     {
@@ -73,6 +74,24 @@
             }
 
             return tenant.Id;
+        }
+
+        public async Task<string> UpdateConnectionString(UpdateConnectionStringTenantRequest request, CancellationToken cancellationToken)
+        {
+            var tenant = await GetTenantInfoAsync(request.TenantId);
+
+            if (request.ConnectionString?.Trim() == _dbSettings.ConnectionString.Trim())
+            {
+                throw new InvalidOperationException("Cant move tenant data to base DB");
+
+                //connectionString = string.Empty;
+            }
+
+            tenant.ConnectionString = request.ConnectionString!;
+
+            await _tenantStore.TryUpdateAsync(tenant);
+
+            return $"Connection String for Tenant : {request.TenantId} is updated";
         }
 
         public async Task<string> ActivateAsync(string id)
