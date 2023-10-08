@@ -1,5 +1,7 @@
 ﻿namespace Multitenant.Auth.UserServices
 {
+    using System.Threading;
+
     using Microsoft.Extensions.Options;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -137,5 +139,24 @@
 
             await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
         }
+
+        public async Task<string> DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId) ?? throw new NotFoundException("User not found");
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                throw new InternalServerException("Deleting user failed", GetErrors(result));
+            }
+
+            await _events.PublishAsync(new ApplicationUserDeletedEvent(userId));
+
+            return string.Format("User Deleted: {0}.", userId);
+        }
+
+        public static List<string> GetErrors(IdentityResult result) =>
+            result.Errors.Select(e => e.Description.ToString()).ToList();
     }
 }

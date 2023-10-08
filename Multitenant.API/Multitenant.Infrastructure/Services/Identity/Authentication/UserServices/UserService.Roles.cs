@@ -86,5 +86,51 @@
 
             return "User Roles Updated Successfully.";
         }
+
+        public async Task<string> AssignRoleToUserAsync(string userId, string roleName)
+        {
+            // Find the user
+            var user = await _userManager.FindByIdAsync(userId) ?? throw new NotFoundException("User Not Found.");
+
+            // Check if the role exists
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                throw new NotFoundException("Role Not Found.");
+            }
+
+            // Check if the user is already in the role
+            if (!await _userManager.IsInRoleAsync(user, roleName))
+            {
+                await _userManager.AddToRoleAsync(user, roleName);
+            }
+
+            await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id, true));
+
+            return "Role Assigned to User Successfully.";
+        }
+
+        public async Task<string> RemoveRoleFromUserAsync(string userId, string roleName)
+        {
+            // Find the user
+            var user = await _userManager.FindByIdAsync(userId) ?? throw new NotFoundException("User Not Found.");
+
+            // Check if the role exists
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                throw new NotFoundException("Role Not Found.");
+            }
+
+            // Check if the user is in the role
+            if (await _userManager.IsInRoleAsync(user, roleName))
+            {
+                await _userManager.RemoveFromRoleAsync(user, roleName);
+            }
+
+            await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id, true));
+
+            return "Role Removed from User Successfully.";
+        }
     }
 }

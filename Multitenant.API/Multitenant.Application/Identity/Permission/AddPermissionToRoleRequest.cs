@@ -1,11 +1,13 @@
 ﻿namespace Multitenant.Application.Identity.Role
 {
+    using MediatR;
+
     using FluentValidation;
 
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Application.Validations;
 
-    public class AddPermissionToRoleRequest
+    public class AddPermissionToRoleRequest : IRequest<string>
     {
         public string RoleId { get; set; } = default!;
         public int PermissionId { get; set; }
@@ -24,5 +26,15 @@
             .MustAsync(async (permission, _) => !await permissionService.ExistsByIdAsync(permission, permission))
                     .WithMessage("Similar Permission already asigned.");
         }
+    }
+
+    public class AddPermissionToRoleRequestHandler : IRequestHandler<AddPermissionToRoleRequest, string>
+    {
+        private readonly IPermissionService _permissionService;
+
+        public AddPermissionToRoleRequestHandler(IPermissionService permissionService) => _permissionService = permissionService;
+
+        public Task<string> Handle(AddPermissionToRoleRequest request, CancellationToken cancellationToken) =>
+            _permissionService.AddPermissionToRoleAsync(request);
     }
 }

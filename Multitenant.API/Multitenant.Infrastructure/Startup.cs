@@ -22,6 +22,7 @@
     using Multitenant.Infrastructure.Services.Identity;
     using Multitenant.Infrastructure.Services.Cache;
     using Multitenant.Models.Mailing;
+    using Multitenant.Infrastructure.Services.Tenant;
 
     public static class Startup
     {
@@ -30,16 +31,18 @@
             var applicationAssembly = typeof(Multitenant.Application.Startup).GetTypeInfo().Assembly;
             services.AddApplication();
 
+            services.AddHostedService<ExpiryJobRunner>();
+
             services.Configure<MailingSettings>(config.GetSection(nameof(MailingSettings)));
 
-            //services.AddHttpClient();
-            services.AddHttpClient("HttpClientName", c => { }).ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                var handler = new HttpClientHandler();
-                handler.ServerCertificateCustomValidationCallback =
-                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-                return handler;
-            });
+            services.AddHttpClient();
+            //services.AddHttpClient("HttpClientName", c => { }).ConfigurePrimaryHttpMessageHandler(() =>
+            //{
+            //    var handler = new HttpClientHandler();
+            //    handler.ServerCertificateCustomValidationCallback =
+            //    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            //    return handler;
+            //});
             MapsterSettings.Configure();
             return services
                 .AddVersioning()

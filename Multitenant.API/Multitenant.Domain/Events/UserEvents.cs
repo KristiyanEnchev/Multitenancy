@@ -1,6 +1,7 @@
 ﻿namespace Multitenant.Domain.Events
 {
     using Multitenant.Domain.Entities;
+    using Multitenant.Domain.Entities.Identity;
 
     public abstract class UserEvent : DomainEvent
     {
@@ -24,5 +25,14 @@
         public ApplicationUserUpdatedEvent(string userId, bool rolesUpdated = false)
             : base(userId) =>
             RolesUpdated = rolesUpdated;
+    }
+
+    public class ApplicationUserDeletedEvent : UserEvent
+    {
+        public ApplicationUserDeletedEvent(string userId)
+             : base(userId)
+        {
+
+        }
     }
 }

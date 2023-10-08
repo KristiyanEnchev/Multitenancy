@@ -6,6 +6,7 @@ namespace Multitenant.Application.Interfaces.Identity
     using Multitenant.Application.Response;
     using Multitenant.Application.Interfaces.DependencyScope;
     using Multitenant.Application.Identity.UserIdentity;
+    using Multitenant.Application.Identity.UserIdentity.Password;
 
     public interface IUserService : ITransientService
     {
@@ -33,6 +34,9 @@ namespace Multitenant.Application.Interfaces.Identity
 
         Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal);
         Task<string> CreateAsync(CreateUserRequest request, string origin);
-        Task UpdateAsync(UpdateUserRequest request, string userId);
+        Task<string> UpdateAsync(UpdateUserRequest request, string userId);
+        Task<string> ChangePasswordAsync(ChangeUserPasswordRequest model);
+
+        Task<string> DeleteUserAsync(string userId);
     }
 }

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Identity\UserRequests\**" />
+    <EmbeddedResource Remove="Identity\UserRequests\**" />
+    <None Remove="Identity\UserRequests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ardalis.Specification" Version="7.0.0" />
     <PackageReference Include="FluentValidation" Version="11.7.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
@@ -17,10 +23,6 @@
     <ProjectReference Include="..\Multitenant.Domain\Multitenant.Domain.csproj" />
     <ProjectReference Include="..\Multitenant.Models\Multitenant.Models.csproj" />
     <ProjectReference Include="..\Multitenant.Shared\Multitenant.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Identity\UserRequests\" />
   </ItemGroup>
 
 </Project>

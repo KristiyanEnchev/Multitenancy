@@ -11,6 +11,7 @@
     using Multitenant.Domain.Entities.Identity;
     using Multitenant.Shared.ClaimsPrincipal;
     using Multitenant.Application.Identity.UserIdentity;
+    using Multitenant.Application.Identity.UserIdentity.Password;
 
     public partial class UserService
     {
@@ -154,19 +155,20 @@
                 var req = _Util.CreateRegistrationEmailRequest(user, emailVerificationUri);
 
                 HttpResponseMessage response;
+                response = await _emailService.SendRegistrationEmail(req);
 
-                try
-                {
-                    //////////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//////////////////////
-                    response = await _emailService.SendRegistrationEmail(req);
+                //try
+                //{
+                //    //////////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//////////////////////
+                //    response = await _emailService.SendRegistrationEmail(req);
 
-                }
-                catch (Exception ex)
-                {
-                    await _userManager.DeleteAsync(user);
+                //}
+                //catch (Exception ex)
+                //{
+                //    await _userManager.DeleteAsync(user);
 
-                    throw;
-                }
+                //    throw;
+                //}
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -189,7 +191,7 @@
             return string.Join(Environment.NewLine, messages);
         }
 
-        public async Task UpdateAsync(UpdateUserRequest request, string userId)
+        public async Task<string> UpdateAsync(UpdateUserRequest request, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -227,6 +229,41 @@
             {
                 throw new InternalServerException("Update profile failed", errors.ToList());
             }
+
+            return "User updated.";
+        }
+
+        public async Task<string> ChangePasswordAsync(ChangeUserPasswordRequest model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId!);
+
+            _ = user ?? throw new NotFoundException("User Not Found.");
+            if (!user.EmailConfirmed) throw new NotFoundException("User Not Found.");
+
+            // Check if you have the current password, and if not, reset the password
+            if (string.IsNullOrEmpty(model.Password))
+            {
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, resetToken, model.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    var errors = result.Errors.Select(e => e.Description);
+                    throw new InternalServerException("Reset password failed", errors.ToList());
+                }
+            }
+            else
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    var errors = result.Errors.Select(e => e.Description);
+                    throw new InternalServerException("Change password failed", errors.ToList());
+                }
+            }
+
+            return "Password Reset Successful!";
         }
     }
 }

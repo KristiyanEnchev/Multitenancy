@@ -36,35 +36,26 @@
         [HttpGet("permissionName")]
         [MustHavePermission(Action.View, Resource.RoleClaims)]
         [SwaggerOperation("Get permission details.", "")]
-        public Task<PermissionDto> GetByNameAsync([FromQuery] string permissionName)
+        public async Task<List<PermissionDto>> GetByNameAsync([FromQuery] string permissionName)
         {
-            return _permissionService.GetByNameAsync(permissionName);
+            return await _permissionService.GetByNameAsync(permissionName);
         }
 
-        [HttpPatch("add/{id}")]
+        [HttpPatch("add")]
         [MustHavePermission(Action.Update, Resource.RoleClaims)]
         [SwaggerOperation("Add permission to a role.", "")]
-        public async Task<ActionResult<string>> AddPermissionToRoleAsync(string id, AddPermissionToRoleRequest request)
+        public async Task<string> AddPermissionToRoleAsync(AddPermissionToRoleRequest request)
         {
-            if (id != request.RoleId)
-            {
-                return BadRequest();
-            }
-
-            return Ok(await _permissionService.AddPermissionToRoleAsync(request.RoleId, request.PermissionId));
+            return await Mediator.Send(request);
         }
 
-        [HttpPatch("remove/{id}")]
+        [HttpPatch("remove")]
         [MustHavePermission(Action.Update, Resource.RoleClaims)]
         [SwaggerOperation("Remove permission from a role.", "")]
-        public async Task<ActionResult<string>> RemovePermissionFromRoleAsync(string id, RemovePermissionFromRoleRequest request)
+        public async Task<ActionResult<string>> RemovePermissionFromRoleAsync(RemovePermissionFromRoleRequest request)
         {
-            if (id != request.RoleId)
-            {
-                return BadRequest();
-            }
-
-            return Ok(await _permissionService.RemovePermissionFromRoleAsync(request.RoleId, request.PermissionId));
+            return await Mediator.Send(request);
+            //return await _permissionService.RemovePermissionFromRoleAsync(request);
         }
 
         [HttpPut("{id}")]

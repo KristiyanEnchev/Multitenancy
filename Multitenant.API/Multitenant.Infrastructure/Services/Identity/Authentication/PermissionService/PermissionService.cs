@@ -20,6 +20,7 @@
     using Multitenant.Shared.Constants.Multitenancy;
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Application.Identity.Permission;
+    using Multitenant.Application.Identity.Role;
 
     public class PermissionService : IPermissionService
     {
@@ -60,20 +61,17 @@
                 is RoleClaim existingPermission
                 && existingPermission.Id != excludeId;
 
-        public async Task<bool> RoleHasPermission(string roleId, int permissionId)
-        {
-            var permission = await GetByIdAsync(permissionId) ?? throw new NotFoundException("Permission Not Found");
-            return await _db.RoleClaims.AnyAsync(x => x.ClaimValue == permission.ClaimValue && x.RoleId == roleId);
-        }
+        public async Task<bool> RoleHasPermission(string roleId, int permissionId) =>
+            await _db.RoleClaims.AnyAsync(x => x.Id == permissionId && x.RoleId == roleId);
 
         public async Task<PermissionDto> GetByIdAsync(int id) =>
             await _db.RoleClaims.SingleOrDefaultAsync(x => x.Id == id) is { } permission
                 ? permission.Adapt<PermissionDto>()
                 : throw new NotFoundException("Permission Not Found");
 
-        public async Task<PermissionDto> GetByNameAsync(string name) =>
-            await _db.RoleClaims.SingleOrDefaultAsync(x => x.ClaimValue == name) is { } permission
-                ? permission.Adapt<PermissionDto>()
+        public async Task<List<PermissionDto>> GetByNameAsync(string name) =>
+            await _db.RoleClaims.Where(x => x.ClaimValue == name).ToListAsync() is { } permission
+                ? permission.Adapt<List<PermissionDto>>()
                 : throw new NotFoundException("Permission Not Found");
 
         public async Task<string> UpdatePermissionsAsync(UpdateRolePermissionsRequest request, CancellationToken cancellationToken)
@@ -124,12 +122,12 @@
             return "Permissions Updated.";
         }
 
-        public async Task<string> AddPermissionToRoleAsync(string roleId, int permissionToAdd)
+        public async Task<string> AddPermissionToRoleAsync(AddPermissionToRoleRequest request)
         {
             // Retrieve the role
-            var role = await _roleManager.FindByIdAsync(roleId) ?? throw new NotFoundException("Role Not Found");
+            var role = await _roleManager.FindByIdAsync(request.RoleId) ?? throw new NotFoundException("Role Not Found");
 
-            var permission = await GetByIdAsync(permissionToAdd) ?? throw new NotFoundException("Permission Not Found");
+            var permission = await GetByIdAsync(request.PermissionId) ?? throw new NotFoundException("Permission Not Found");
 
             if (permission.ClaimValue != null)
             {
@@ -147,12 +145,12 @@
             return "Permission Added.";
         }
 
-        public async Task<string> RemovePermissionFromRoleAsync(string roleId, int permissionToRemove)
+        public async Task<string> RemovePermissionFromRoleAsync(RemovePermissionFromRoleRequest request)
         {
             // Retrieve the role
-            var role = await _roleManager.FindByIdAsync(roleId) ?? throw new NotFoundException("Role Not Found");
+            var role = await _roleManager.FindByIdAsync(request.RoleId) ?? throw new NotFoundException("Role Not Found");
 
-            var permission = await GetByIdAsync(permissionToRemove) ?? throw new NotFoundException("Permission Not Found");
+            var permission = await GetByIdAsync(request.PermissionId) ?? throw new NotFoundException("Permission Not Found");
 
             if (permission.ClaimValue != null)
             {

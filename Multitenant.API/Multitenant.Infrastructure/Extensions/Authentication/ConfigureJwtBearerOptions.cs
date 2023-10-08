@@ -11,6 +11,7 @@
 
     using Multitenant.Application.Exceptions;
     using Multitenant.Models.Security;
+    using Serilog;
 
     public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
     {
@@ -52,6 +53,33 @@
             };
             options.Events = new JwtBearerEvents()
             {
+                //                OnAuthenticationFailed = c =>
+                //                {
+                //                    if (c.Request.Path.Value == "/api/auth/logout" && !c.Response.HasStarted)
+                //                    {
+                //                        return Task.CompletedTask;
+                //                    }
+                //                    if (c.Exception is SecurityTokenExpiredException)
+                //                    {
+                //                        c.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                //                        c.Response.ContentType = "application/json";
+                //                        throw new UnauthorizedException("Authentication Failed.");
+                //                    }
+                //                    else
+                //                    {
+                //#if DEBUG
+                //                        c.NoResult();
+                //                        c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                //                        c.Response.ContentType = "text/plain";
+                //                        throw new InternalServerException("Authentication Failed.");
+                //                        //return c.Response.WriteAsync(c.Exception.ToString());
+                //#else
+                //                                c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                //                                c.Response.ContentType = "application/json";
+                //                                throw new InternalServerException("Authentication Failed.");
+                //#endif
+                //                    }
+                //                },
                 OnAuthenticationFailed = c =>
                 {
                     if (c.Request.Path.Value == "/api/auth/logout" && !c.Response.HasStarted)
@@ -62,7 +90,8 @@
                     {
                         c.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                         c.Response.ContentType = "application/json";
-                        throw new UnauthorizedException("Authentication Failed.");
+                        // Log the exception details
+                        Log.Error(c.Exception, "Authentication Failed: Token has expired.");
                     }
                     else
                     {
@@ -70,13 +99,16 @@
                         c.NoResult();
                         c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         c.Response.ContentType = "text/plain";
-                        return c.Response.WriteAsync(c.Exception.ToString());
+                        // Log the exception details
+                        Log.Error(c.Exception, "Authentication Failed: Internal Server Error.");
 #else
-                                c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                                c.Response.ContentType = "application/json";
-                                throw new InternalServerException("Authentication Failed.");
+                        c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        c.Response.ContentType = "application/json";
+                        // Log the exception details
+                        Log.Error(c.Exception, "Authentication Failed: Internal Server Error.");
 #endif
                     }
+                    return Task.CompletedTask;
                 },
                 OnChallenge = context =>
                 {

@@ -9,6 +9,8 @@
     using Multitenant.Application.Interfaces.Identity;
     using Multitenant.Application.Identity.UserIdentity;
     using Multitenant.Shared.ClaimsPrincipal;
+    using Multitenant.Application.Identity.UserIdentity.Password;
+    using Multitenant.Application.Exceptions;
 
     public class UsersController : VersionNeutralApiController
     {
@@ -45,17 +47,17 @@
 
         [HttpPut("{id}")]
         [MustHavePermission(Action.Create, Resource.Users)]
-        [SwaggerOperation("Creates a new user.", "")]
-        public async Task Update(UpdateUserRequest request, string userId)
+        [SwaggerOperation("Upda user deatils.", "")]
+        public async Task<string> Update(UpdateUserRequest request, string userId)
         {
-            await _userService.UpdateAsync(request, userId);
+            return await _userService.UpdateAsync(request, userId);
         }
 
-        //[HttpDelete(nameof(Delete) + "/{id}")]
-        //public async Task<ActionResult> Delete(string id)
-        //{
-        //    return await userService.Delete(id).ToActionResult();
-        //}
+        [HttpDelete(nameof(Delete))]
+        public async Task<string> Delete([FromQuery] string id)
+        {
+            return await _userService.DeleteUserAsync(id);
+        }
 
         [HttpGet("{id}/roles")]
         [MustHavePermission(Action.View, Resource.UserRoles)]
@@ -87,6 +89,14 @@
 
             await _userService.ToggleStatusAsync(request, cancellationToken);
             return Ok();
+        }
+
+        [HttpPut("change-password")]
+        [MustHavePermission(Action.Update, Resource.Users)]
+        [SwaggerOperation("Change or reset password of user by Id.", "")]
+        public async Task<string> ChangePasswordAsync(ChangeUserPasswordRequest model)
+        {
+            return await Mediator.Send(model);
         }
 
 

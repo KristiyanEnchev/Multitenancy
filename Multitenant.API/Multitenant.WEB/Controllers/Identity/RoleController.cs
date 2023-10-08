@@ -65,7 +65,7 @@
             return _roleService.CreateOrUpdateAsync(request);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [MustHavePermission(Action.Delete, Resource.Roles)]
         [SwaggerOperation("Delete a role.", "")]
         public Task<string> DeleteAsync([FromQuery] string id)

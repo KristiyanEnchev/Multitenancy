@@ -118,7 +118,8 @@
                 return Unauthorized();
             }
 
-            await _authService.ChangePasswordAsync(model, userId);
+            model.UserId = userId;
+            await Mediator.Send(model);
             return Ok();
         }
 
